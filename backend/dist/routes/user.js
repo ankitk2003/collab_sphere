@@ -13,24 +13,58 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.userRouter = void 0;
-const express_1 = __importDefault(require("express"));
+const express_1 = require("express");
 const db_1 = require("../db");
-const userRouter = (0, express_1.default)();
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const userRouter = (0, express_1.Router)();
 exports.userRouter = userRouter;
+const JWT_user_password = "ankit123";
 userRouter.post("/signup", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { email, password, firstname, lastname } = req.body;
-    yield db_1.userModel.create({
-        email,
-        password,
-        firstname,
-        lastname
-    });
-    res.json({
-        message: "this is signup endpoint"
-    });
+    try {
+        const existingUser = yield db_1.userModel.findOne({
+            email: email,
+        });
+        if (existingUser) {
+            res.status(400).json({
+                message: "user already exist",
+            });
+        }
+        else {
+            yield db_1.userModel.create({
+                email,
+                password,
+                firstname,
+                lastname,
+            });
+            res.json({
+                message: "signed-up successfully",
+            });
+        }
+    }
+    catch (e) {
+        console.log("error in adding data" + e);
+    }
 }));
-userRouter.get("/signin", (req, res) => {
-    res.json({
-        message: "this is signin endpoint"
+userRouter.post("/signin", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { email, password } = req.body;
+    const user = yield db_1.userModel.findOne({
+        // return either the user or undefined
+        email: email,
+        password: password,
     });
-});
+    if (user) {
+        const token = jsonwebtoken_1.default.sign({
+            id: user._id,
+        }, JWT_user_password);
+        res.json({
+            token: token,
+            userName: user.firstname
+        });
+    }
+    else {
+        res.status(403).json({
+            mesaage: "incorrect credentials",
+        });
+    }
+}));
