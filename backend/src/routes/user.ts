@@ -32,27 +32,27 @@ userRouter.post("/signup", async (req, res) => {
 });
 
 userRouter.post("/signin", async (req, res) => {
-    const { email, password } = req.body;
-    const user = await userModel.findOne({
-      // return either the user or undefined
-      email: email,
-      password: password,
+  const { email, password } = req.body;
+  const user = await userModel.findOne({
+    // return either the user or undefined
+    email: email,
+    password: password,
+  });
+  if (user) {
+    const token = jwt.sign(
+      {
+        id: user._id,
+      },
+      JWT_user_password
+    );
+    res.json({
+      token: token,
+      userName: user.firstname,
     });
-    if (user) {
-      const token = jwt.sign(
-        {
-          id: user._id,
-        },
-        JWT_user_password
-      );
-      res.json({
-        token: token,
-        userName:user.firstname
-      });
-    } else {
-      res.status(403).json({
-        mesaage: "incorrect credentials",
-      });
-    }
+  } else {
+    res.status(403).json({
+      mesaage: "incorrect credentials",
+    });
+  }
 });
 export { userRouter };

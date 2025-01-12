@@ -8,5 +8,6 @@ const userSchema = new Schema({
     lastname: String,
 });
 
+
 const userModel = mongoose.model("users", userSchema);
 export { userModel };
