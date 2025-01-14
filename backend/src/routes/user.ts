@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken";
 const userRouter = Router();
 const JWT_user_password = "ankit123";
 userRouter.post("/signup", async (req, res) => {
-  const { email, password, firstname, lastname } = req.body;
+  const { email, password, firstname, lastname,role} = req.body;
 
   try {
     const existingUser = await userModel.findOne({
@@ -21,6 +21,7 @@ userRouter.post("/signup", async (req, res) => {
         password,
         firstname,
         lastname,
+        role
       });
       res.json({
         message: "signed-up successfully",
