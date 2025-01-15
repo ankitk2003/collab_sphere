@@ -20,7 +20,7 @@ const userRouter = (0, express_1.Router)();
 exports.userRouter = userRouter;
 const JWT_user_password = "ankit123";
 userRouter.post("/signup", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { email, password, firstname, lastname } = req.body;
+    const { email, password, firstname, lastname, role } = req.body;
     try {
         const existingUser = yield db_1.userModel.findOne({
             email: email,
@@ -36,6 +36,7 @@ userRouter.post("/signup", (req, res) => __awaiter(void 0, void 0, void 0, funct
                 password,
                 firstname,
                 lastname,
+                role
             });
             res.json({
                 message: "signed-up successfully",
@@ -59,7 +60,7 @@ userRouter.post("/signin", (req, res) => __awaiter(void 0, void 0, void 0, funct
         }, JWT_user_password);
         res.json({
             token: token,
-            userName: user.firstname
+            userName: user.firstname,
         });
     }
     else {

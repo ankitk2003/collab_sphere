@@ -16,10 +16,12 @@ const express_1 = __importDefault(require("express"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const user_1 = require("./routes/user");
 const mongoose_1 = __importDefault(require("mongoose"));
+const creatorProfile_1 = require("./routes/creatorProfile");
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
 app.use("/api/v1/user", user_1.userRouter);
+app.use("/api/v1/creator", creatorProfile_1.creatorRouter);
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
         yield mongoose_1.default.connect("mongodb+srv://ankitdevx1808:ankit2003@cluster0.wlxth.mongodb.net/collab_sphere");
