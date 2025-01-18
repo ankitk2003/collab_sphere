@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { userModel } from "../db";
 import jwt from "jsonwebtoken";
-
+import bcrypt from "bcrypt";
 const userRouter = Router();
 const JWT_user_password = "ankit123";
 userRouter.post("/signup", async (req, res) => {
@@ -15,10 +15,13 @@ userRouter.post("/signup", async (req, res) => {
       res.status(400).json({
         message: "user already exist",
       });
-    } else {
+    }
+
+ else {
+      const hashedPassword=await bcrypt.hash(password, 10);
       await userModel.create({
         email,
-        password,
+        password:hashedPassword,
         firstname,
         lastname,
         role
@@ -31,29 +34,42 @@ userRouter.post("/signup", async (req, res) => {
     console.log("error in adding data" + e);
   }
 });
-
+//@ts-ignore
 userRouter.post("/signin", async (req, res) => {
-  const { email, password } = req.body;
-  const user = await userModel.findOne({
-    // return either the user or undefined
-    email: email,
-    password: password,
+    const { email, password } = req.body;
+  
+    try {
+      const user = await userModel.findOne({ email: email });
+  
+      if (!user) {
+        return res.status(403).json({
+          message: "Incorrect credentials",
+        });
+      }
+//@ts-ignore
+      const isPasswordValid = await bcrypt.compare(password, user.password);
+      if (!isPasswordValid) {
+        return res.status(403).json({
+          message: "Incorrect credentials",
+        });
+      }
+  
+      const token = jwt.sign(
+        {
+          id: user._id,
+        },
+        JWT_user_password
+      );
+  
+      res.json({
+        token: token,
+        userName: user.firstname,
+      });
+    } catch (e) {
+      console.log("Error during signin: " + e);
+      res.status(500).json({ message: "Internal server error" });
+    }
   });
-  if (user) {
-    const token = jwt.sign(
-      {
-        id: user._id,
-      },
-      JWT_user_password
-    );
-    res.json({
-      token: token,
-      userName: user.firstname,
-    });
-  } else {
-    res.status(403).json({
-      mesaage: "incorrect credentials",
-    });
-  }
-});
+  
 export { userRouter };
+

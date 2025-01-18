@@ -16,6 +16,7 @@ exports.userRouter = void 0;
 const express_1 = require("express");
 const db_1 = require("../db");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const bcrypt_1 = __importDefault(require("bcrypt"));
 const userRouter = (0, express_1.Router)();
 exports.userRouter = userRouter;
 const JWT_user_password = "ankit123";
@@ -31,9 +32,10 @@ userRouter.post("/signup", (req, res) => __awaiter(void 0, void 0, void 0, funct
             });
         }
         else {
+            const hashedPassword = yield bcrypt_1.default.hash(password, 10);
             yield db_1.userModel.create({
                 email,
-                password,
+                password: hashedPassword,
                 firstname,
                 lastname,
                 role
@@ -47,14 +49,23 @@ userRouter.post("/signup", (req, res) => __awaiter(void 0, void 0, void 0, funct
         console.log("error in adding data" + e);
     }
 }));
+//@ts-ignore
 userRouter.post("/signin", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { email, password } = req.body;
-    const user = yield db_1.userModel.findOne({
-        // return either the user or undefined
-        email: email,
-        password: password,
-    });
-    if (user) {
+    try {
+        const user = yield db_1.userModel.findOne({ email: email });
+        if (!user) {
+            return res.status(403).json({
+                message: "Incorrect credentials",
+            });
+        }
+        //@ts-ignore
+        const isPasswordValid = yield bcrypt_1.default.compare(password, user.password);
+        if (!isPasswordValid) {
+            return res.status(403).json({
+                message: "Incorrect credentials",
+            });
+        }
         const token = jsonwebtoken_1.default.sign({
             id: user._id,
         }, JWT_user_password);
@@ -63,9 +74,8 @@ userRouter.post("/signin", (req, res) => __awaiter(void 0, void 0, void 0, funct
             userName: user.firstname,
         });
     }
-    else {
-        res.status(403).json({
-            mesaage: "incorrect credentials",
-        });
+    catch (e) {
+        console.log("Error during signin: " + e);
+        res.status(500).json({ message: "Internal server error" });
     }
 }));
