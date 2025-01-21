@@ -4,7 +4,6 @@ import {
   FaBullhorn,
   FaStar,
   FaGift,
-  FaLink,
   FaHandshake,
   FaCalendarAlt,
   FaRegImage,
