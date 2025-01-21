@@ -1,14 +1,20 @@
 import { useState } from 'react'
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import Home from './components/Home'
+import Choose from './components/Choose'
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
-    <>
-<Home/>
-    </>
+  <Router>
+    <Routes>
+      <Route path='/' element={<Home/>}></Route>
+    <Route path="/choose-role" element={<Choose />} />
+          {/* <Route path="/creator-signup" element={<CreatorSignup />} />
+          <Route path="/business-signup" element={<BusinessSignup />} /> */}
+    </Routes>
+  </Router>
   )
 }
 

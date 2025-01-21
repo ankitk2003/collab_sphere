@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import {
   FaBullhorn,
   FaStar,
@@ -10,9 +11,16 @@ import {
   FaLightbulb,
   FaCogs,
 } from "react-icons/fa";
-import { FaFacebook, FaInstagram, FaYoutube, FaSnapchatGhost, FaTelegramPlane } from "react-icons/fa";
+import {
+  FaFacebook,
+  FaInstagram,
+  FaYoutube,
+  FaSnapchatGhost,
+  FaTelegramPlane,
+} from "react-icons/fa";
 
 function Home() {
+  const navigate = useNavigate();
   const serviceIcons = [
     { name: "Sponsored Posts", icon: <FaBullhorn /> },
     { name: "Product Reviews", icon: <FaStar /> },
@@ -46,7 +54,12 @@ function Home() {
           className="flex justify-evenly md:w-3/12 flex justify-between"
           id="second-div"
         >
-          <button className="bg-white text-green-400 shadow-sm border-2 px-3 py-1 hover:bg-green-400 hover:text-white focus:outline-none">
+          <button
+            className="bg-white text-green-400 shadow-sm border-2 px-3 py-1 hover:bg-green-400 hover:text-white focus:outline-none"
+            onClick={() => {
+              navigate("/choose-role");
+            }}
+          >
             Signup
           </button>
           <button className="md:mr-56 hover:text-green-400">Login</button>
@@ -62,9 +75,7 @@ function Home() {
               </span>
               <br />
               <span className="font-semibold tracking-widest">with</span>{" "}
-              <span className="ml-3 tracking-wider font-mono">
-                Influencers
-              </span>
+              <span className="ml-3 tracking-wider font-mono">Influencers</span>
             </div>
           </div>
 
@@ -88,7 +99,10 @@ function Home() {
         </div>
       </div>
 
-      <div id="services-id" className="flex flex-wrap justify-center gap-4 mt-5">
+      <div
+        id="services-id"
+        className="flex flex-wrap justify-center gap-4 mt-5"
+      >
         {serviceIcons.map((service, index) => (
           <div
             key={index}
@@ -99,23 +113,25 @@ function Home() {
           </div>
         ))}
       </div>
-   <div className="flex justify-center mt-5 te">
-    <div className="font-bold text-2xl">promote your businesses thorugh :-</div>
-   </div>
-   <div className="flex justify-center>">
-   <div className="flex flex-wrap justify-center gap-36 w-[1285px] mt-5 ml-12">
-  {/* Facebook */}
-  <FaFacebook className="text-blue-600 text-[100px] cursor-pointer hover:scale-110" />
-  {/* Instagram */}
-  <FaInstagram className="text-pink-500 text-[100px] cursor-pointer hover:scale-110" />
-  {/* YouTube */}
-  <FaYoutube className="text-red-600 text-[100px] cursor-pointer hover:scale-110" />
-  {/* Snapchat */}
-  <FaSnapchatGhost className="text-yellow-400 text-[100px] cursor-pointer hover:scale-110" />
-  {/* Telegram */}
-  <FaTelegramPlane className="text-blue-400 text-[100px] cursor-pointer hover:scale-110" />
-</div>
-</div>
+      <div className="flex justify-center mt-5 te">
+        <div className="font-bold text-2xl">
+          promote your businesses thorugh :-
+        </div>
+      </div>
+      <div className="flex justify-center>">
+        <div className="flex flex-wrap justify-center gap-36 w-[1285px] mt-5 ml-12">
+          {/* Facebook */}
+          <FaFacebook className="text-blue-600 text-[100px] cursor-pointer hover:scale-110" />
+          {/* Instagram */}
+          <FaInstagram className="text-pink-500 text-[100px] cursor-pointer hover:scale-110" />
+          {/* YouTube */}
+          <FaYoutube className="text-red-600 text-[100px] cursor-pointer hover:scale-110" />
+          {/* Snapchat */}
+          <FaSnapchatGhost className="text-yellow-400 text-[100px] cursor-pointer hover:scale-110" />
+          {/* Telegram */}
+          <FaTelegramPlane className="text-blue-400 text-[100px] cursor-pointer hover:scale-110" />
+        </div>
+      </div>
     </>
   );
 }
