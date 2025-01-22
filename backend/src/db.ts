@@ -6,8 +6,7 @@ const { Schema, Types } = mongoose; // Destructure Types for ObjectId
 const userSchema = new Schema({
     email: { type: String, required: true },
     password: String,
-    firstname: String,
-    lastname: String,
+    username: String,
     role: String
 });
 

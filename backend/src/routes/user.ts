@@ -5,7 +5,7 @@ import bcrypt from "bcrypt";
 const userRouter = Router();
 const JWT_user_password = "ankit123";
 userRouter.post("/signup", async (req, res) => {
-  const { email, password, firstname, lastname,role} = req.body;
+  const { email, password, username,role} = req.body;
 
   try {
     const existingUser = await userModel.findOne({
@@ -22,8 +22,7 @@ userRouter.post("/signup", async (req, res) => {
       await userModel.create({
         email,
         password:hashedPassword,
-        firstname,
-        lastname,
+       username,
         role
       });
       res.json({
@@ -63,7 +62,7 @@ userRouter.post("/signin", async (req, res) => {
   
       res.json({
         token: token,
-        userName: user.firstname,
+        userName: user.username,
       });
     } catch (e) {
       console.log("Error during signin: " + e);
