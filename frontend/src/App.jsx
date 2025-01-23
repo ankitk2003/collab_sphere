@@ -5,6 +5,7 @@ import Home from './components/Home'
 import Choose from './components/Choose'
 import CreatorSignup from './components/CreatorSignup';
 import BusinessSignup from './components/BusinessSignup';
+import Login from './components/Login';
 function App() {
 
   return (
@@ -14,6 +15,7 @@ function App() {
     <Route path="/choose-role" element={<Choose />} />
         <Route path="/creator-signup" element={<CreatorSignup />} />
           <Route path="/business-signup" element={<BusinessSignup />} />
+          <Route path='/login' element={<Login/>}/>
     </Routes>
   </Router>
   )
