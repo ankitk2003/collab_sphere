@@ -17,7 +17,8 @@ const creatorProfileSchema = new Schema({
     userId: { type: Types.ObjectId, ref: 'users', require: true }, // Reference to the user model
     bio: String,
     niche: String,
-    platformLinks: {},
+    platformName: String,
+    platformLinks: String,
     followerCount: Number,
     engagementRate: Number
 });

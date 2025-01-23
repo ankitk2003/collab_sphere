@@ -5,8 +5,7 @@ import { userMiddleware } from "../middleware/usermiddleware";
 const businessRouter = Router();
 
 businessRouter.post("/profile",userMiddleware,async (req, res) => {
-  const { industry, websiteUrl, campaignGoals, targetAudience, budgetRange } =
-    req.body;
+  const { industry, websiteUrl, campaignGoals, targetAudience, budgetRange } = req.body;
   //@ts-ignore
   const userId = req.userId;
   try {
@@ -15,7 +14,7 @@ businessRouter.post("/profile",userMiddleware,async (req, res) => {
       industry,
       websiteUrl,
       campaignGoals,
-      targetAudience, // object me hoga.
+      targetAudience, // array.
       budgetRange,
     });
     res.send({

@@ -25,7 +25,7 @@ app.use((0, cors_1.default)());
 app.use(express_1.default.json());
 app.use("/api/v1/user", user_1.userRouter);
 app.use("/api/v1/creator", creatorProfile_1.creatorRouter);
-app.use("api/v1/business", businessProfile_1.businessRouter);
+app.use("/api/v1/business", businessProfile_1.businessRouter);
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
         yield mongoose_1.default.connect("mongodb+srv://ankitdevx1808:ankit2003@cluster0.wlxth.mongodb.net/collab_sphere");

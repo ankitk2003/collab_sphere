@@ -1,5 +1,10 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import founder1 from "../images/founder1.jpg";
+import founder2 from "../images/founder2.jpg";
+import founder3 from "../images/founder3.jpg";
+import founder4 from "../images/founder4.jpg";
+
 import {
   FaBullhorn,
   FaStar,
@@ -18,6 +23,10 @@ import {
   FaTelegramPlane,
 } from "react-icons/fa";
 
+import { FaUsers } from "react-icons/fa";
+import { AiOutlineSearch } from "react-icons/ai";
+import { MdOutlineSpeed } from "react-icons/md";
+import { BiHappy } from "react-icons/bi";
 function Home() {
   const navigate = useNavigate();
   const serviceIcons = [
@@ -36,7 +45,7 @@ function Home() {
       <div className="md:bg-white h-51.6 w-screen flex justify-between mt-1 sticky top-0">
         <div
           id="first-div"
-          className="flex justify-evenly md:w-3/12 flex justify-between"
+          className="flex  md:w-3/12 flex justify-between w-screen"
         >
           <span className="w-200 h-35 ml-8 font-bold text-lg mt-1.4">
             Collab_Sphere
@@ -137,6 +146,153 @@ function Home() {
           {/* Telegram */}
           <FaTelegramPlane className="text-blue-400 text-[100px] cursor-pointer hover:scale-110" />
         </div>
+      </div>
+
+      <div className="flex justify-center">
+        <div
+          className="bg-[#e8faf4] w-full max-w-[1267px] h-auto flex flex-wrap lg:flex-nowrap justify-between mt-10 p-4"
+          id="main-div"
+        >
+          {/* Left Div */}
+          <div
+            id="left-div"
+            className="flex flex-col flex-1 items-start lg:ml-28 space-y-5"
+          >
+            <div id="first-div" className="mt-5">
+              <span className="font-semibold text-lg">Collab_sphere</span>
+              <span className="ml-1 font-light">pro</span>
+            </div>
+            <div
+              id="second-div"
+              className="mt-5 font-semibold text-xl lg:text-2xl text-center lg:text-left"
+            >
+              <span>the</span>
+              <span className="ml-1 text-[#7ed957]">Premium</span>
+              <span className="ml-1">marketing</span>
+              <br />
+              <span>solution for every business</span>
+            </div>
+            <div id="third-div" className="flex flex-wrap gap-5 mt-10">
+              <div className="border-[2px] border-black p-4 text-sm font-semibold rounded-md border-opacity-50 w-full lg:w-[45%]">
+                More tools, more productivity, and more success—upgrade to Pro
+                today!
+              </div>
+              <div className="border-[2px] border-black p-4 text-sm font-semibold rounded-md border-opacity-50 w-full lg:w-[45%]">
+                Experience collaboration without limits. Go Pro with Collab
+                Sphere
+              </div>
+            </div>
+            <div id="fourth-div" className="flex flex-wrap gap-5">
+              <div className="border-[2px] border-black mt-5 p-4 text-sm font-semibold rounded-md border-opacity-50 w-full lg:w-[45%]">
+                Upgrade to Pro—Where Cutting-Edge Innovation Meets Seamless
+                Efficiency
+              </div>
+              <div className="border-[2px] border-black mt-5 p-4 text-sm font-semibold rounded-md border-opacity-50 w-full lg:w-[45%]">
+                Work smarter, faster, and better with Collab Sphere Pro’s
+                advanced features
+              </div>
+            </div>
+            <div id="button-div" className="flex justify-start mt-4">
+              <button className="border-[1px] border-black px-3 py-1 text-white bg-[#013a12] rounded-md">
+                Try now
+              </button>
+            </div>
+          </div>
+
+          {/* Right Div */}
+          <div
+            id="right-div"
+            className="flex justify-center flex-1 mt-10 lg:mt-0 lg:mr-36"
+          >
+            <div className="w-full max-w-[360px] border-[2px] border-black p-6 bg-[#013a12] text-white mt-20 mb-20">
+              The Pro version of Collab Sphere takes your productivity to new
+              heights with a suite of exclusive features designed to streamline
+              collaboration and maximize efficiency. With advanced tools,
+              enhanced security, and unlimited access to premium resources, the
+              Pro version empowers you to work smarter, faster, and more
+              effectively.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* div for four logos*/}
+      <div className="flex flex-wrap justify-center py-8 bg-white w-full max-w-[1267px] mx-auto">
+        <div className="text-center space-y-2 p-4 w-full sm:w-1/2 lg:w-1/4">
+          <FaUsers className=" text-8xl mx-auto" />
+          <p className="text-gray-700 font-medium">
+            Access a pool of top talent across 700 categories
+          </p>
+        </div>
+        <div className="text-center space-y-2 p-4 w-full sm:w-1/2 lg:w-1/4">
+          <AiOutlineSearch className=" text-8xl mx-auto" />
+          <p className="text-gray-700 font-medium">
+            Enjoy a simple, easy-to-use matching experience
+          </p>
+        </div>
+        <div className="text-center space-y-2 p-4 w-full sm:w-1/2 lg:w-1/4">
+          <MdOutlineSpeed className=" text-8xl mx-auto" />
+          <p className="text-gray-700 font-medium">
+            Get quality work done quickly and within budget
+          </p>
+        </div>
+        <div className="text-center space-y-2 p-4 w-full sm:w-1/2 lg:w-1/4">
+          <BiHappy className="text-8xl mx-auto" />
+          <p className="text-gray-700 font-medium">
+            Only pay when you’re happy
+          </p>
+        </div>
+      </div>
+
+      <div id="button-div" className="flex justify-center ">
+        <button className="border-[1px] border-black mt-4 ml-5 px-3 py-1 text-white bg-[#013a12] rounded-md">
+          Join now
+        </button>
+      </div>
+
+      {/*client div*/}
+      <div id="clients-div" className="mt-4">
+        <div className="ml-20">
+          <p className="font-bold text-3xl">Our trusted clients</p>
+        </div>
+        <div id="image-parent-div" className="flex justify-evenly mt-5">
+          <div className="size-40 border-[2px] border-black border-opacity-10">
+            <img
+              src={founder1}
+              alt="Placeholder 1"
+              className="w-full h-full object-cover"
+            />
+          </div>
+          <div className="size-40 border-[2px] border-black border-opacity-10">
+            <img
+              src={founder2}
+              alt="Placeholder 2"
+              className="w-full h-full object-cover"
+            />
+          </div>
+          <div className="size-40 border-[2px] border-black border-opacity-10">
+            <img
+              src={founder3}
+              alt="Placeholder 3"
+              className="w-full h-full object-cover"
+            />
+          </div>
+          <div className="size-40 border-[2px] border-black border-opacity-10 ">
+            <img
+              src={founder4}
+              alt="Placeholder 4"
+              className="w-full h-full object-cover"
+            />
+          </div>
+        </div>
+      </div>
+
+
+      <div id="quote-div" className="flex justify-center mt-10">
+        <div className="w-[1250px] h-[270px] bg-[#4d1727] flex justify-center text-6xl tracking-wide rounded-md">
+            <span className="text-white mt-24">Brands and influencers at your<span className="text-[#ff914d] ml-2">fingertips</span></span>
+        </div>
+
       </div>
     </>
   );

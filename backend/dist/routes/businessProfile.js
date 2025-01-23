@@ -25,7 +25,7 @@ businessRouter.post("/profile", usermiddleware_1.userMiddleware, (req, res) => _
             industry,
             websiteUrl,
             campaignGoals,
-            targetAudience, // object me hoga.
+            targetAudience, // array.
             budgetRange,
         });
         res.send({

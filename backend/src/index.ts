@@ -11,7 +11,7 @@ app.use(cors());
 app.use(express.json());
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/creator",creatorRouter);
-app.use("api/v1/business",businessRouter)
+app.use("/api/v1/business",businessRouter)
 async function main(){
 await mongoose.connect("mongodb+srv://ankitdevx1808:ankit2003@cluster0.wlxth.mongodb.net/collab_sphere");
 console.log("database connected");
