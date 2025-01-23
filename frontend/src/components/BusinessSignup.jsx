@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 import axios from "axios";
-function CreatorSignup() {
+function BusinessSignup() {
   const usernameRef = useRef();
   const emailRef = useRef();
   const passwordRef = useRef();
@@ -9,7 +9,7 @@ function CreatorSignup() {
     const username = usernameRef.current.value;
     const email = emailRef.current.value;
     const password = passwordRef.current.value;
-    const role = "creator";
+    const role = "business";
 
     // Validate inputs
     if (!username || !email || !password) {
@@ -27,11 +27,16 @@ function CreatorSignup() {
         role,
       });
 
-      console.log("Sign-up successful:", response.data.message);
+      console.log(response.data.message);
       alert("Sign-up successful!");
+      usernameRef.current.value="";
+         passwordRef.current.value="";
+         emailRef.current.value="";
     } catch (error) {
+        if(error.response&& error.response.status===400){
+            alert("User already exist");
+        }
       console.error("Sign-up failed:", error.response?.data || error.message);
-      alert("Sign-up failed. Please try again.");
     }
   };
 
@@ -43,7 +48,7 @@ function CreatorSignup() {
 
       <div className="flex justify-center mt-5">
         <h1 className="font-serif text-3xl">
-          Find your dream company to work with
+ Find best creator for your business
         </h1>
       </div>
 
@@ -136,7 +141,7 @@ function CreatorSignup() {
             onClick={handleSignup}
             className="border-[1px] border-black w-[200px] h-[35px] rounded-md bg-green-500 text-white"
           >
-            Sign Up as Influencer
+            Sign Up as business
           </button>
         </div>
       </div>
@@ -144,4 +149,4 @@ function CreatorSignup() {
   );
 }
 
-export default CreatorSignup;
+export default BusinessSignup;

@@ -12,6 +12,7 @@ function Choose() {
     if (selected === "creator") {
       navigate("/creator-signup")
     } else if (selected === "business") {
+      navigate("/business-signup")
     }
   };
 
