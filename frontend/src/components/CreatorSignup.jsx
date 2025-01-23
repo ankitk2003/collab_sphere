@@ -1,6 +1,9 @@
 import React, { useRef } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 function CreatorSignup() {
+  const navigate = useNavigate();
+
   const usernameRef = useRef();
   const emailRef = useRef();
   const passwordRef = useRef();
@@ -20,18 +23,26 @@ function CreatorSignup() {
     console.log("Signup details:", { username, email, password, role });
 
     try {
-      const response = await axios.post("http://localhost:3000/api/v1/user/signup", {
-        username,
-        email,
-        password,
-        role,
-      });
+      const response = await axios.post(
+        "http://localhost:3000/api/v1/user/signup",
+        {
+          username,
+          email,
+          password,
+          role,
+        }
+      );
 
-      console.log("Sign-up successful:", response.data.message);
+      console.log(response.data.message);
       alert("Sign-up successful!");
+      usernameRef.current.value = "";
+      passwordRef.current.value = "";
+      emailRef.current.value = "";
     } catch (error) {
+      if (error.response && error.response.status === 400) {
+        alert("User already exist");
+      }
       console.error("Sign-up failed:", error.response?.data || error.message);
-      alert("Sign-up failed. Please try again.");
     }
   };
 

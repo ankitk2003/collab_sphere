@@ -18,12 +18,14 @@ const user_1 = require("./routes/user");
 const mongoose_1 = __importDefault(require("mongoose"));
 const creatorProfile_1 = require("./routes/creatorProfile");
 const cors_1 = __importDefault(require("cors"));
+const businessProfile_1 = require("./routes/businessProfile");
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)());
 app.use(express_1.default.json());
 app.use("/api/v1/user", user_1.userRouter);
 app.use("/api/v1/creator", creatorProfile_1.creatorRouter);
+app.use("api/v1/business", businessProfile_1.businessRouter);
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
         yield mongoose_1.default.connect("mongodb+srv://ankitdevx1808:ankit2003@cluster0.wlxth.mongodb.net/collab_sphere");

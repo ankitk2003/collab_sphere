@@ -24,7 +24,7 @@ const businessProfileSchema = new Schema({
     industry: String,
     websiteUrl: String,
     campaignGoals: String,
-    targetAudience: {}, 
+    targetAudience: [], 
     budgetRange: String
 });
 

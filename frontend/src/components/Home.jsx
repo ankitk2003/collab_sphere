@@ -61,10 +61,14 @@ function Home() {
           >
             Signup
           </button>
-          <button className="md:mr-56 hover:text-green-400"
-          onClick={()=>{
-            navigate("/login")
-          }}>Login</button>
+          <button
+            className="md:mr-56 hover:text-green-400"
+            onClick={() => {
+              navigate("/login");
+            }}
+          >
+            Login
+          </button>
         </div>
       </div>
 

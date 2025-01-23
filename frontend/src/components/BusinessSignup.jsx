@@ -20,22 +20,25 @@ function BusinessSignup() {
     console.log("Signup details:", { username, email, password, role });
 
     try {
-      const response = await axios.post("http://localhost:3000/api/v1/user/signup", {
-        username,
-        email,
-        password,
-        role,
-      });
+      const response = await axios.post(
+        "http://localhost:3000/api/v1/user/signup",
+        {
+          username,
+          email,
+          password,
+          role,
+        }
+      );
 
       console.log(response.data.message);
       alert("Sign-up successful!");
-      usernameRef.current.value="";
-         passwordRef.current.value="";
-         emailRef.current.value="";
+      usernameRef.current.value = "";
+      passwordRef.current.value = "";
+      emailRef.current.value = "";
     } catch (error) {
-        if(error.response&& error.response.status===400){
-            alert("User already exist");
-        }
+      if (error.response && error.response.status === 400) {
+        alert("User already exist");
+      }
       console.error("Sign-up failed:", error.response?.data || error.message);
     }
   };
@@ -48,7 +51,7 @@ function BusinessSignup() {
 
       <div className="flex justify-center mt-5">
         <h1 className="font-serif text-3xl">
- Find best creator for your business
+          Find best creator for your business
         </h1>
       </div>
 

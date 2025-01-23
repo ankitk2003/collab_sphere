@@ -1,10 +1,45 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useRef } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 function Login() {
-    const navigate=useNavigate();
-    const handleUnderDevelopment=()=>{
-        alert("this functionality is under development");
+  const navigate = useNavigate();
+  const handleUnderDevelopment = () => {
+    alert("this functionality is under development");
+  };
+  const emailRef = useRef();
+  const passwordRef = useRef();
+
+  const handleLogin = async (e) => {
+    e.preventDefault(); // Prevent page reload on form submission
+  
+    const email = emailRef.current.value;
+    const password = passwordRef.current.value;
+  
+    if (!email || !password) {
+      alert("All fields are required");
+      return; // Exit early
     }
+  
+    try {
+      const res = await axios.post("http://localhost:3000/api/v1/user/signin", {
+        email,
+        password,
+      });
+      localStorage.setItem("token",res.data.token);
+      alert(`Login successful! Token: ${res.data.token}`);
+      navigate("/dashboard"); // Example navigation after login
+    } catch (error) {
+      if (error.response && error.response.status === 403) {
+        console.log(error);
+        alert("Incorrect credentials");
+      } else {
+        console.error(error);
+        alert("Something went wrong. Please try again later.");
+      }
+    }
+  };
+  
+
   return (
     <>
       {/* Header Text */}
@@ -15,7 +50,9 @@ function Login() {
       {/* Login Form */}
       <div className="flex items-center justify-center min-h-screen bg-gray-50">
         <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow-xl">
-          <h2 className="text-2xl font-bold text-center text-gray-800">Login</h2>
+          <h2 className="text-2xl font-bold text-center text-gray-800">
+            Login
+          </h2>
           <form className="space-y-4">
             {/* Email Input */}
             <div>
@@ -32,6 +69,7 @@ function Login() {
                 className="w-full px-4 py-2 text-gray-700 bg-gray-100 border rounded-lg focus:ring focus:ring-blue-300 focus:outline-none"
                 aria-label="Email Address"
                 required
+                ref={emailRef}
               />
             </div>
 
@@ -50,6 +88,7 @@ function Login() {
                 className="w-full px-4 py-2 text-gray-700 bg-gray-100 border rounded-lg focus:ring focus:ring-blue-300 focus:outline-none"
                 aria-label="Password"
                 required
+                ref={passwordRef}
               />
             </div>
 
@@ -58,6 +97,7 @@ function Login() {
               <button
                 type="submit"
                 className="w-full px-4 py-2 text-white bg-green-500 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring focus:ring-blue-300"
+                onClick={handleLogin}
               >
                 Login
               </button>
@@ -66,15 +106,19 @@ function Login() {
 
           {/* Forgot Password Link */}
           <p className="text-sm text-center text-gray-600">
-            Forgot your password?{' '}
-            <a href="#" className="text-blue-500 hover:underline" onClick={handleUnderDevelopment}>
+            Forgot your password?{" "}
+            <a
+              href="#"
+              className="text-blue-500 hover:underline"
+              onClick={handleUnderDevelopment}
+            >
               Reset here
             </a>
           </p>
 
           {/* Signup Link */}
           <p className="text-sm text-center text-gray-600">
-            Don't have an account?{' '}
+            Don't have an account?{" "}
             <a href="/choose-role" className="text-blue-500 hover:underline">
               Sign up
             </a>

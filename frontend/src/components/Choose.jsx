@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 function Choose() {
-  const navigate=useNavigate();
+  const navigate = useNavigate();
   const [selected, setSelected] = useState(null);
 
   const handleSelect = (type) => {
@@ -10,9 +10,9 @@ function Choose() {
   const handleSignup = () => {
     console.log(selected);
     if (selected === "creator") {
-      navigate("/creator-signup")
+      navigate("/creator-signup");
     } else if (selected === "business") {
-      navigate("/business-signup")
+      navigate("/business-signup");
     }
   };
 
@@ -22,8 +22,7 @@ function Choose() {
         Collab_Sphere
       </div>
       <div className="flex justify-center flex-wrap text-6xl mt-5">
-      I am a business owner looking for influencers.
-
+        I am a business owner looking for influencers.
       </div>
       <div className="flex justify-center mt-20">
         {/* Creator Div */}
@@ -34,10 +33,7 @@ function Choose() {
           }`}
           onClick={() => handleSelect("business")}
         >
-          <p className="ml-5 mt-16 font-semibold">
-         join as a business man
-
-          </p>
+          <p className="ml-5 mt-16 font-semibold">join as a business man</p>
         </div>
 
         {/* Business Div */}
