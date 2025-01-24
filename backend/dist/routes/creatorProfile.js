@@ -16,13 +16,14 @@ const usermiddleware_1 = require("../middleware/usermiddleware");
 const creatorRouter = (0, express_1.Router)();
 exports.creatorRouter = creatorRouter;
 creatorRouter.post("/profile", usermiddleware_1.userMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { niche, platformLinks, follwerCount, engagementRate } = req.body;
+    const { niche, platformLink, platformName, follwerCount, engagementRate } = req.body;
     //@ts-ignore
     const userId = req.userId;
     yield db_1.creatorModel.create({
         userId: userId,
         niche,
-        platformLinks,
+        platformName,
+        platformLink,
         follwerCount,
         engagementRate,
     });

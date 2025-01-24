@@ -18,7 +18,7 @@ const creatorProfileSchema = new Schema({
     bio: String,
     niche: String,
     platformName: String,
-    platformLinks: String,
+    platformLink: String,
     followerCount: Number,
     engagementRate: Number
 });

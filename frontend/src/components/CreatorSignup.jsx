@@ -38,6 +38,7 @@ function CreatorSignup() {
       usernameRef.current.value = "";
       passwordRef.current.value = "";
       emailRef.current.value = "";
+      navigate("/login");
     } catch (error) {
       if (error.response && error.response.status === 400) {
         alert("User already exist");
