@@ -16,7 +16,7 @@ const usermiddleware_1 = require("../middleware/usermiddleware");
 const creatorRouter = (0, express_1.Router)();
 exports.creatorRouter = creatorRouter;
 creatorRouter.post("/profile", usermiddleware_1.userMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { niche, bio, platformLink, platformName, followerCount, engagementRate } = req.body;
+    const { niche, bio, platformLink, platformName, followerCount, engagementRate, } = req.body;
     //@ts-ignore
     const userId = req.userId;
     yield db_1.creatorModel.create({
@@ -32,10 +32,11 @@ creatorRouter.post("/profile", usermiddleware_1.userMiddleware, (req, res) => __
         message: "profile created successfully",
     });
 }));
-creatorRouter.get("/profile", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id } = req.body;
-    const foundUser = db_1.creatorModel.findOne({
-        id,
+creatorRouter.get("/profile", usermiddleware_1.userMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    //@ts-ignore
+    const userId = req.userId;
+    const foundUser = yield db_1.creatorModel.findOne({
+        userId,
     });
     if (!foundUser) {
         res.json({
@@ -45,6 +46,23 @@ creatorRouter.get("/profile", (req, res) => __awaiter(void 0, void 0, void 0, fu
     else {
         res.json({
             foundUser,
+        });
+    }
+}));
+creatorRouter.get("/get-name", usermiddleware_1.userMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    //@ts-ignore
+    const userId = req.userId;
+    const username = yield db_1.userModel.findOne({
+        _id: userId,
+    });
+    if (!username) {
+        res.json({
+            message: "user not found",
+        });
+    }
+    else {
+        res.json({
+            username
         });
     }
 }));

@@ -28,8 +28,8 @@ businessRouter.post("/profile", usermiddleware_1.userMiddleware, (req, res) => _
             targetAudience, // array.
             budgetRange,
         });
-        res.send({
-            messagae: "profile updated sucessfully"
+        res.json({
+            message: "profile updated sucessfully"
         });
     }
     catch (error) {

@@ -17,8 +17,8 @@ businessRouter.post("/profile",userMiddleware,async (req, res) => {
       targetAudience, // array.
       budgetRange,
     });
-    res.send({
-        messagae:"profile updated sucessfully"
+    res.json({
+        message:"profile updated sucessfully"
     })
   } catch (error) {
     console.log("error in adding data", error);

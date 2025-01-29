@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const niches = [
   "Technology",
@@ -23,7 +24,7 @@ function CreatorForm() {
   const platformLinkRef = useRef();
   const followerCountRef = useRef();
   const followerEngagementRef = useRef();
-
+  const navigate=useNavigate();
   async function handleSubmit() {
     try {
       const token = localStorage.getItem("token");
@@ -65,6 +66,7 @@ function CreatorForm() {
       );
 
       console.log(res.data.message);
+  navigate("/creator-dashboard");
     } catch (error) {
       console.log("token not found", error);
     }
