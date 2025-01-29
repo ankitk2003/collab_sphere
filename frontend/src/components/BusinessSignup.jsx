@@ -1,10 +1,11 @@
 import React, { useRef } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 function BusinessSignup() {
   const usernameRef = useRef();
   const emailRef = useRef();
   const passwordRef = useRef();
-
+  const navigate=useNavigate();
   const handleSignup = async () => {
     const username = usernameRef.current.value;
     const email = emailRef.current.value;
@@ -35,6 +36,7 @@ function BusinessSignup() {
       usernameRef.current.value = "";
       passwordRef.current.value = "";
       emailRef.current.value = "";
+      navigate("/login")
     } catch (error) {
       if (error.response && error.response.status === 400) {
         alert("User already exist");
