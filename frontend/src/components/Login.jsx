@@ -11,23 +11,26 @@ function Login() {
 
   const handleLogin = async (e) => {
     e.preventDefault(); // Prevent page reload on form submission
-  
+
     const email = emailRef.current.value;
     const password = passwordRef.current.value;
-  
+
     if (!email || !password) {
       alert("All fields are required");
       return; // Exit early
     }
-  
+
     try {
       const res = await axios.post("http://localhost:3000/api/v1/user/signin", {
         email,
         password,
       });
-      localStorage.setItem("token",res.data.token);
+      localStorage.setItem("token", res.data.token);
+      const role = res.data.role;
       alert(`Login successful! Token: ${res.data.token}`);
-      navigate("/dashboard"); // Example navigation after login
+      if (role == "creator")
+        navigate("/creator-form"); // Example navigation after login
+      else navigate("/business-form");
     } catch (error) {
       if (error.response && error.response.status === 403) {
         console.log(error);
@@ -38,7 +41,6 @@ function Login() {
       }
     }
   };
-  
 
   return (
     <>

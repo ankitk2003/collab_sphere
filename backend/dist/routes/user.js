@@ -71,6 +71,7 @@ userRouter.post("/signin", (req, res) => __awaiter(void 0, void 0, void 0, funct
         res.json({
             token: token,
             userName: user.username,
+            role: user.role,
         });
     }
     catch (e) {

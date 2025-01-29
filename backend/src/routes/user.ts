@@ -63,6 +63,7 @@ userRouter.post("/signin", async (req, res) => {
       res.json({
         token: token,
         userName: user.username,
+        role:user.role,
       });
     } catch (e) {
       console.log("Error during signin: " + e);

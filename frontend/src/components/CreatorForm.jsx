@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import axios from "axios";
+import React, { useRef, useState } from "react";
 
 const niches = [
   "Technology",
@@ -17,6 +18,57 @@ const niches = [
 
 function CreatorForm() {
   const [selectedNiche, setSelectedNiche] = useState("");
+  const bioRef = useRef();
+  const platformNameRef = useRef();
+  const platformLinkRef = useRef();
+  const followerCountRef = useRef();
+  const followerEngagementRef = useRef();
+
+  async function handleSubmit() {
+    try {
+      const token = localStorage.getItem("token");
+      const finalToken = `Bearer ${token}`;
+      console.log(finalToken);
+      //  console.log(token);
+      //  console.log(selectedNiche);
+
+      const bio = bioRef.current.value;
+      const platformName = platformNameRef.current.value;
+      const platformLink = platformLinkRef.current.value;
+      const followerCount = followerCountRef.current.value;
+      const engagementRate = followerEngagementRef.current.value;
+      const niche = selectedNiche;
+      console.log(
+        bio,
+        platformLink,
+        platformName,
+        followerCount,
+        engagementRate,
+        niche
+      );
+
+      const res = await axios.post(
+        "http://localhost:3000/api/v1/creator/profile",
+        {
+          bio,
+          platformName,
+          platformLink,
+          followerCount,
+          engagementRate,
+          niche,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      console.log(res.data.message);
+    } catch (error) {
+      console.log("token not found", error);
+    }
+  }
 
   return (
     <div className="container mx-auto p-5">
@@ -59,6 +111,7 @@ function CreatorForm() {
               placeholder="Tell about yourself..."
               className="w-full border border-gray-300 p-2 rounded-lg"
               rows="4"
+              ref={bioRef}
             ></textarea>
           </div>
 
@@ -97,6 +150,7 @@ function CreatorForm() {
               id="platform-name"
               className="w-full p-2 border border-gray-300 rounded-lg"
               placeholder="Enter platform name"
+              ref={platformNameRef}
             />
           </div>
 
@@ -112,6 +166,7 @@ function CreatorForm() {
               id="platform-link"
               className="w-full p-2 border border-gray-300 rounded-lg"
               placeholder="Enter platform link"
+              ref={platformLinkRef}
             />
           </div>
 
@@ -127,6 +182,7 @@ function CreatorForm() {
               id="followers-count"
               className="w-full p-2 border border-gray-300 rounded-lg"
               placeholder="Enter followers count"
+              ref={followerCountRef}
             />
           </div>
 
@@ -142,11 +198,15 @@ function CreatorForm() {
               id="engagement-rate"
               className="w-full p-2 border border-gray-300 rounded-lg"
               placeholder="Enter engagement rate"
+              ref={followerEngagementRef}
             />
           </div>
           <div className="flex justify-end">
             {" "}
-            <button className="border-gray-600 border-[1px] p-2 h-auto w-auto bg-green-500 text-white hover:text-black hover:bg-white rounded-md">
+            <button
+              className="border-gray-600 border-[1px] p-2 h-auto w-auto bg-green-500 text-white hover:text-black hover:bg-white rounded-md"
+              onClick={handleSubmit}
+            >
               Get started
             </button>
           </div>

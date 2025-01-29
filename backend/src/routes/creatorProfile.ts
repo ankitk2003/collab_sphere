@@ -4,15 +4,16 @@ import { userMiddleware } from "../middleware/usermiddleware";
 
 const creatorRouter = Router();
 creatorRouter.post("/profile",userMiddleware,async (req, res) => {
-  const {niche, platformLink, platformName,follwerCount, engagementRate } = req.body;
+  const {niche,bio, platformLink, platformName,followerCount, engagementRate } = req.body;
   //@ts-ignore
   const userId=req.userId;
   await creatorModel.create({
     userId: userId,
     niche,
+    bio,
     platformName,
     platformLink,
-    follwerCount,
+    followerCount,
     engagementRate,
   });
   res.json({
