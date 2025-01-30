@@ -24,4 +24,22 @@ businessRouter.post("/profile",userMiddleware,async (req, res) => {
     console.log("error in adding data", error);
   }
 });
+businessRouter.get("/profile", userMiddleware, async (req, res) => {
+  //@ts-ignore
+  const userId = req.userId;
+
+  const foundUser = await businessModel.findOne({
+    userId,
+  });
+  if (!foundUser) {
+    res.json({
+      message: "complete your profile first",
+    });
+  } else {
+    res.json({
+      foundUser,
+    });
+  }
+});
+
 export{businessRouter};
