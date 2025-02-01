@@ -36,3 +36,20 @@ businessRouter.post("/profile", usermiddleware_1.userMiddleware, (req, res) => _
         console.log("error in adding data", error);
     }
 }));
+businessRouter.get("/profile", usermiddleware_1.userMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    //@ts-ignore
+    const userId = req.userId;
+    const foundUser = yield db_1.businessModel.findOne({
+        userId,
+    });
+    if (!foundUser) {
+        res.json({
+            message: "complete your profile first",
+        });
+    }
+    else {
+        res.json({
+            foundUser,
+        });
+    }
+}));

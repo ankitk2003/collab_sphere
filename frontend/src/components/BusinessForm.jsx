@@ -1,7 +1,9 @@
 import axios from "axios";
 import React, { useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const BusinessForm = () => {
+const navigate=useNavigate();
   const [industry, setIndustry] = useState("");
   const websiteUrlRef = useRef();
   const campaignGoalsRef = useRef();
@@ -32,8 +34,9 @@ const BusinessForm = () => {
           },
         }
       );
-
+navigate("/business-dashboard")
       console.log(res);
+
     } catch (error) {
       console.log("Error submitting form", error);
     }

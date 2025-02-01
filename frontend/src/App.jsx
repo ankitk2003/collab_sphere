@@ -9,6 +9,7 @@ import Login from './components/Login';
 import CreatorForm from './components/CreatorForm';
 import BusinessForm from './components/BusinessForm';
 import CreatorDashboard from './components/CreatorDashboard';
+import BusinessDashboard from './components/BusinessDashboard';
 function App() {
 
   return (
@@ -22,6 +23,7 @@ function App() {
           <Route path='/creator-form' element={<CreatorForm/>}/>
           <Route path='/business-form' element={<BusinessForm/>}/>
           <Route path='/creator-dashboard' element={<CreatorDashboard/>}/>
+          <Route path='/business-dashboard' element={<BusinessDashboard/>}/>
     </Routes>
   </Router>
   )

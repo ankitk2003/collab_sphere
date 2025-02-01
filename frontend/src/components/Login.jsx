@@ -28,10 +28,41 @@ function Login() {
       localStorage.setItem("token", res.data.token);
       const role = res.data.role;
       alert(`Login successful! Token: ${res.data.token}`);
-      if (role == "creator")
-        navigate("/creator-form"); // Example navigation after login
-      else navigate("/business-form");
+
+      //if creator is already registered witn thw profile section so we redirect them to the dashboard.
+      if (role == "creator") {
+        const profileData = await axios.get(
+          "http://localhost:3000/api/v1/creator/profile",
+          {
+            headers: {
+              Authorization: `Bearer ${res.data.token}`,
+            },
+          }
+        );
+        console.log(profileData.data);
+        if (profileData.data.message) {
+          navigate("/creator-form");
+        } else {
+          navigate("/creator-dashboard"); // Example navigation after login
+        }
+      } else {
+        const profileData = await axios.get(
+          "http://localhost:3000/api/v1/business/profile",
+          {
+            headers: {
+              Authorization: `Bearer ${res.data.token}`,
+            },
+          }
+        );
+        console.log(profileData.data);
+        if (profileData.data.message) {
+          navigate("/business-form");
+        } else {
+          navigate("/business-dashboard");
+        }
+      }
     } catch (error) {
+      // try block ends here....
       if (error.response && error.response.status === 403) {
         console.log(error);
         alert("Incorrect credentials");
