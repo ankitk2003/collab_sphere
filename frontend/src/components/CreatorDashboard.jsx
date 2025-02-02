@@ -8,6 +8,8 @@ function CreatorDashboard() {
   const [username, setUsername] = useState("");
   const [isDropdownOpen, setDropdownOpen] = useState(false);
 
+
+  //fetching the username
   useEffect(() => {
     const fetchProfile = async () => {
       try {
@@ -29,6 +31,14 @@ function CreatorDashboard() {
 
     fetchProfile();
   }, []);
+
+const handleLogout=()=>{
+   localStorage.removeItem("token");
+navigate("/");
+
+}
+
+
 
   return (
     <>
@@ -77,7 +87,7 @@ function CreatorDashboard() {
                   </li>
                   <li
                     className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-                    onClick={() => navigate("/logout")}
+                    onClick={handleLogout}
                   >
                     Logout
                   </li>
@@ -95,6 +105,9 @@ function CreatorDashboard() {
           <span className="text-yellow-600 mt-2 ml-2">{username}</span>
         </div>
       </div>
+
+      
+
     </>
   );
 }
