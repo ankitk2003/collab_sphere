@@ -54,6 +54,25 @@ businessRouter.get("/all-business", async (req, res) => {
   }
 });
 
+businessRouter.get("/get-name", userMiddleware, async (req, res) => {
+  //@ts-ignore
+  const userId = req.userId;
+  const user = await businessModel.findOne({
+    userId: userId,
+  });
+  if (!user) {
+    res.json({
+      message: "user not found",
+    });
+  }
+  else{
+    // console.log("Fetched user:", user);
+    res.json({
+      businessName:user.businessName
+    })
+  }
+});
+
 
 
 export{businessRouter};

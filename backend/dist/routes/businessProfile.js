@@ -64,3 +64,21 @@ businessRouter.get("/all-business", (req, res) => __awaiter(void 0, void 0, void
         res.status(500).json({ message: error });
     }
 }));
+businessRouter.get("/get-name", usermiddleware_1.userMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    //@ts-ignore
+    const userId = req.userId;
+    const user = yield db_1.businessModel.findOne({
+        userId: userId,
+    });
+    if (!user) {
+        res.json({
+            message: "user not found",
+        });
+    }
+    else {
+        // console.log("Fetched user:", user);
+        res.json({
+            businessName: user.businessName
+        });
+    }
+}));

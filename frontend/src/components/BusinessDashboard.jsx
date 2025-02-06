@@ -1,23 +1,23 @@
-import React from 'react'
-import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 import { AiOutlineBell, AiOutlineUser } from "react-icons/ai";
+import axios from "axios";
 
 function BusinessDashboard() {
   return (
     <div>
-      <NavComponent/>
+      <NavComponent />
+      <Welcome />
     </div>
-  )
+  );
 }
 
-
-function NavComponent(){
+function NavComponent() {
   const navigate = useNavigate();
   const [isDropdownOpen, setDropdownOpen] = useState(false);
 
   //fetching the username
- 
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -83,8 +83,48 @@ function NavComponent(){
       </div>
 
       {/* Welcome Message */}
-    
-      </>
-  )
+    </>
+  );
 }
-export default BusinessDashboard
+
+function Welcome() {
+  const [businessName, setBusinessName] = useState("");
+
+  useEffect(() => {
+    async function fetchName() {
+      const token = localStorage.getItem("token");
+      try {
+        const res = await axios.get(
+          "http://localhost:3000/api/v1/business/get-name",
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+
+        // Ensure we correctly extract businessName from the API response
+        setBusinessName(res.data.businessName|| ""); 
+        console.log(res.data);
+      } catch (error) {
+        console.error("Error fetching profile:", error);
+      }
+    }
+    fetchName();
+  }, []); 
+
+  useEffect(() => {
+    console.log(businessName);
+  }, [businessName]); // Now logs correctly when businessName updates
+
+  return (
+    <div className="flex justify-center mt-5">
+      <div className="w-[1300px] h-[200px] bg-[#013a12] text-white text-3xl flex items-start px-20 py-10">
+        <span className="mt-2">Welcome to Collab_sphere, </span>
+        <span className="text-yellow-600 mt-2 ml-2">{businessName}</span>
+      </div>
+    </div>
+  );
+}
+
+
+
+export default BusinessDashboard;
