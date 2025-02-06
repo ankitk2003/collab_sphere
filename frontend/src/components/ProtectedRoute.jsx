@@ -5,7 +5,7 @@ import { authAtom } from "../store/atoms/loginState";
 const ProtectedRoute = ({ children }) => {
   const isLoggedIn = useRecoilValue(authAtom); 
 
-  return isLoggedIn ? children : <Navigate to="/login" replace />;
+  return isLoggedIn ? children : <Navigate to="/" replace />;
 };
 
 export default ProtectedRoute;

@@ -21,7 +21,6 @@ function userMiddleware(req, res, next) {
         if (!decoded || !decoded.id) {
             return res.status(403).json({ message: "Invalid token." });
         }
-        // Attach the decoded user ID to the request object
         //@ts-ignore
         req.userId = decoded.id;
         console.log(decoded);

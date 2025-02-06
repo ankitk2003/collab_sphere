@@ -16,17 +16,19 @@ const usermiddleware_1 = require("../middleware/usermiddleware");
 const businessRouter = (0, express_1.Router)();
 exports.businessRouter = businessRouter;
 businessRouter.post("/profile", usermiddleware_1.userMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { industry, websiteUrl, campaignGoals, targetAudience, budgetRange } = req.body;
+    const { industry, websiteUrl, campaignGoals, targetAudience, budgetRange, businessName } = req.body;
     //@ts-ignore
     const userId = req.userId;
     try {
         yield db_1.businessModel.create({
+            businessName,
             userId,
             industry,
             websiteUrl,
             campaignGoals,
             targetAudience, // array.
             budgetRange,
+            posted: new Date().toLocaleDateString('en-GB') // Formats as DD/MM/YYYY
         });
         res.json({
             message: "profile updated sucessfully"
@@ -51,5 +53,14 @@ businessRouter.get("/profile", usermiddleware_1.userMiddleware, (req, res) => __
         res.json({
             foundUser,
         });
+    }
+}));
+businessRouter.get("/all-business", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const businessProfiles = yield db_1.businessModel.find(); // Await the DB query
+        res.json({ businessProfiles });
+    }
+    catch (error) {
+        res.status(500).json({ message: error });
     }
 }));

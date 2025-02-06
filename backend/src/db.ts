@@ -22,11 +22,13 @@ const creatorProfileSchema = new Schema({
 
 const businessProfileSchema = new Schema({
     userId: { type: Types.ObjectId, ref: 'users' },
+    businessName:String,
     industry: String,
     websiteUrl: String,
     campaignGoals: String,
     targetAudience: [], 
-    budgetRange: String
+    budgetRange: String,
+    posted:String
 });
 
 const userModel = mongoose.model("users", userSchema);

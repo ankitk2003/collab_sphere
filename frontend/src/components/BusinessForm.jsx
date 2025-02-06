@@ -9,6 +9,7 @@ const navigate=useNavigate();
   const campaignGoalsRef = useRef();
   const targetAudienceRef = useRef();
   const budgetRangeRef = useRef();
+  const businessNameRef=useRef();
 
   async function handleSubmit() {
     try {
@@ -18,12 +19,13 @@ const navigate=useNavigate();
       const campaignGoals = campaignGoalsRef.current.value;
       const targetAudience = targetAudienceRef.current.value.split(",").map(item => item.trim());
       const budgetRange = budgetRangeRef.current.value;
-      
+      const businessName=businessNameRef.current.value;
       const res = await axios.post(
         "http://localhost:3000/api/v1/business/profile",
         {
           industry,
           websiteUrl,
+          businessName,
           campaignGoals,
           targetAudience,
           budgetRange,
@@ -62,6 +64,17 @@ navigate("/business-dashboard")
               placeholder="Enter industry"
               value={industry}
               onChange={(e) => setIndustry(e.target.value)}
+            />
+          </div>
+
+
+          <div className="mb-4">
+            <label className="block text-sm font-medium">Business name:</label>
+            <input
+              type="text"
+              className="w-full p-2 border border-gray-300 rounded-lg"
+              placeholder="Enter business Name"
+              ref={businessNameRef}
             />
           </div>
 
