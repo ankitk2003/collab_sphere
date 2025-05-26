@@ -71,7 +71,7 @@ function Home() {
             Signup
           </button>
           <button
-            className="md:mr-56 hover:text-green-400"
+            className="md:mr-56 hover:text-green-400 ml-5"
             onClick={() => {
               navigate("/login");
             }}

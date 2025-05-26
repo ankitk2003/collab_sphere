@@ -5,26 +5,24 @@ import axios from "axios";
 import { FaMapMarkerAlt } from "react-icons/fa";
 import { FaUsers, FaChartLine, FaExternalLinkAlt } from "react-icons/fa";
 
+// ...existing imports...
+
 function CreatorDashboard() {
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
+  const [senderId, setSenderId] = useState("");
   const [isDropdownOpen, setDropdownOpen] = useState(false);
 
-  //fetching the username
   useEffect(() => {
     const fetchProfile = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await axios.get(
-          "http://localhost:3000/api/v1/creator/get-name",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        // console.log(res.data.username.username);
-        await setUsername(res.data.username.username);
+        const res = await axios.get("http://localhost:3000/api/v1/creator/user-data", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        const id = res.data.userData._id;
+        setSenderId(id);
+        setUsername(res.data.userData.username);
       } catch (error) {
         console.error("Error fetching profile:", error);
       }
@@ -33,6 +31,7 @@ function CreatorDashboard() {
     fetchProfile();
   }, []);
 
+  // logout logic
   const handleLogout = () => {
     localStorage.removeItem("token");
     navigate("/");
@@ -40,13 +39,11 @@ function CreatorDashboard() {
 
   return (
     <>
+      {/* Top Navbar */}
       <div className="flex justify-between items-center w-full px-6 py-3 shadow-md bg-white">
-        {/* Left Side - Logo */}
         <div className="flex items-center">
           <span className="ml-4 font-bold text-lg">Collab_Sphere</span>
         </div>
-
-        {/* Middle - Search Bar */}
         <div className="w-1/3">
           <input
             type="text"
@@ -54,41 +51,20 @@ function CreatorDashboard() {
             className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-400"
           />
         </div>
-
-        {/* Right Side - Notification & Profile Icons */}
         <div className="flex items-center space-x-6 text-xl text-gray-600 relative">
           <AiOutlineBell className="cursor-pointer hover:text-green-400 text-2xl" />
-
-          {/* Profile Icon with Hover Dropdown */}
           <div
             className="relative"
             onMouseEnter={() => setDropdownOpen(true)}
             onMouseLeave={() => setDropdownOpen(false)}
           >
             <AiOutlineUser className="cursor-pointer hover:text-green-400 text-2xl" />
-
-            {/* Dropdown List */}
             {isDropdownOpen && (
-              <div className="absolute right-0  w-48 bg-white border rounded-lg shadow-lg">
+              <div className="absolute right-0 w-48 bg-white border rounded-lg shadow-lg">
                 <ul className="py-2">
-                  <li
-                    className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-                    onClick={() => navigate("/profile")}
-                  >
-                    Profile
-                  </li>
-                  <li
-                    className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-                    onClick={() => navigate("/settings")}
-                  >
-                    Settings
-                  </li>
-                  <li
-                    className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-                    onClick={handleLogout}
-                  >
-                    Logout
-                  </li>
+                  <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer" onClick={() => navigate("/profile")}>Profile</li>
+                  <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer" onClick={() => navigate("/settings")}>Settings</li>
+                  <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer" onClick={handleLogout}>Logout</li>
                 </ul>
               </div>
             )}
@@ -103,103 +79,77 @@ function CreatorDashboard() {
           <span className="text-yellow-600 mt-2 ml-2">{username}</span>
         </div>
       </div>
+
+      {/* Main Content */}
       <div className="flex justify-center gap-10">
-        <Businesses />
-        <CreatorProfile username={username}/> 
+        <Businesses senderId={senderId} />
+        <CreatorProfile username={username} />
       </div>
     </>
   );
 }
 
-function Businesses() {
+// Businesses Component
+function Businesses({ senderId }) {
   const [businesses, setBusinesses] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchAllBusinesses = async () => {
-      try {
-        const res = await axios.get(
-          "http://localhost:3000/api/v1/business/all-business"
-        );
-        setBusinesses(res.data.businessProfiles);
-      } catch (error) {
-        console.error("Error fetching businesses:", error);
-      }
-    };
-
-    fetchAllBusinesses();
+    axios.get("http://localhost:3000/api/v1/business/all-business")
+      .then((res) => setBusinesses(res.data.businessProfiles))
+      .catch((err) => console.error("Error fetching businesses:", err));
   }, []);
-  useEffect(() => {
-    console.log(businesses);
-  });
 
   return (
     <div className="p-6">
-      <h2 className="text-xl font-semibold  ml-10 mb-6">
-        Businesses You Would Like to Work With
-      </h2>
-
+      <h2 className="text-xl font-semibold ml-10 mb-6">Businesses You Would Like to Work With</h2>
       <div className="space-y-6">
-        {businesses.map((business, index) => (
+        {businesses.map((business) => (
           <div
             key={business.userId}
-            id="card-div"
-            className="border-[2px] w-full h-auto group hover:bg-gray-100 ml-10"
+            className="border-[2px] w-full h-auto group hover:bg-gray-100 ml-10 p-5"
           >
-            <div className="p-5" id="for-padding">
-              <div id="date-div" className="text-sm">
-                <span>Posted on : </span>
-                {business.posted}
-              </div>
-              <div
-                id="business-name-div"
-                className="font-semibold group-hover:underline group-hover:text-green-500 text-2xl mt-2"
-              >
-                {business.businessName}
-              </div>
-              <div id="budget" className="text-sm">
-                <span className="font-semibold">estd Budget: </span>$
-                {business.budgetRange}
-              </div>
-              <div id="goal-div" className="mt-4">
-                <div>{business.campaignGoals}</div>
-              </div>
-              <div id="industry-div" className="mt-2 text-sm">
-                <span className="font-semibold">Industry: </span>
-                <span></span>
-                {business.industry}
-              </div>
-              <div
-                id="audience-div"
-                className="mt-2 text-sm flex items-center gap-2 flex-wrap"
-              >
-                <span className="font-semibold">Target audience:</span>
-                <span>{business.targetAudience.join(", ")}</span>
-
-                <div className="flex items-center ml-56">
-                  <FaMapMarkerAlt className="text-red-500" />
-                  <span>India</span>
-                </div>
-              </div>
-
-              <div id="website-url" className="mt-4">
-                <span className="text-sm font-serif">
-                  Know more about brand:
-                </span>{" "}
-                <a
-                  href={business.websiteUrl}
-                  className="text-blue-500 underline"
-                  target="_blank"
-                >
-                  {business.websiteUrl}
-                </a>
+            <div className="text-sm">Posted on : {business.posted}</div>
+            <div className="font-semibold group-hover:underline group-hover:text-green-500 text-2xl mt-2">
+              {business.businessName}
+            </div>
+            <div className="text-sm"><strong>estd Budget:</strong> ${business.budgetRange}</div>
+            <div className="mt-4">{business.campaignGoals}</div>
+            <div className="mt-2 text-sm"><strong>Industry:</strong> {business.industry}</div>
+            <div className="mt-2 text-sm flex items-center gap-2 flex-wrap">
+              <strong>Target audience:</strong> {business.targetAudience.join(", ")}
+              <div className="flex items-center ml-56">
+                <FaMapMarkerAlt className="text-red-500" />
+                <span>India</span>
               </div>
             </div>
+            <div className="mt-4 text-sm font-serif">
+              Know more about brand:{" "}
+              <a href={business.websiteUrl} className="text-blue-500 underline" target="_blank">
+                {business.websiteUrl}
+              </a>
+            </div>
+            <button
+              className="bg-green-500 rounded-2xl text-white p-2 mt-2"
+              onClick={() =>
+                navigate("/chat", {
+                  state: {
+                    senderId,
+                    recieverId: business._id,
+                  },
+                })
+              }
+            >
+              Chat
+            </button>
           </div>
         ))}
       </div>
     </div>
   );
 }
+
+// CreatorProfile remains unchanged
 
 //profile in right side
 

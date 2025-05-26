@@ -16,12 +16,13 @@ const usermiddleware_1 = require("../middleware/usermiddleware");
 const creatorRouter = (0, express_1.Router)();
 exports.creatorRouter = creatorRouter;
 creatorRouter.post("/profile", usermiddleware_1.userMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { niche, bio, platformLink, platformName, followerCount, engagementRate, } = req.body;
+    const { niche, username, bio, platformLink, platformName, followerCount, engagementRate, } = req.body;
     //@ts-ignore
     const userId = req.userId;
     yield db_1.creatorModel.create({
         userId: userId,
         niche,
+        username,
         bio,
         platformName,
         platformLink,
@@ -49,20 +50,31 @@ creatorRouter.get("/profile", usermiddleware_1.userMiddleware, (req, res) => __a
         });
     }
 }));
-creatorRouter.get("/get-name", usermiddleware_1.userMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+creatorRouter.get("/all-profiles", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const allProfiles = yield db_1.creatorModel.find();
+        res.json({
+            profiles: allProfiles,
+        });
+    }
+    catch (error) {
+        res.status(500).json({ message: "Error fetching profiles", error });
+    }
+}));
+creatorRouter.get("/user-data", usermiddleware_1.userMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     //@ts-ignore
     const userId = req.userId;
-    const username = yield db_1.userModel.findOne({
+    const userData = yield db_1.userModel.findOne({
         _id: userId,
     });
-    if (!username) {
+    if (!userData) {
         res.json({
             message: "user not found",
         });
     }
     else {
         res.json({
-            username
+            userData
         });
     }
 }));

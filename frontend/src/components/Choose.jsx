@@ -9,10 +9,12 @@ function Choose() {
   };
   const handleSignup = () => {
     console.log(selected);
-    if (selected === "creator") {
-      navigate("/creator-signup");
+    if (selected === "creator") {      
+      localStorage.setItem("role", "creator");
+      navigate("/signup");
     } else if (selected === "business") {
-      navigate("/business-signup");
+      localStorage.setItem("role", "business");
+      navigate("/signup");
     }
   };
 

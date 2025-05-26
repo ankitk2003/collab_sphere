@@ -6,6 +6,7 @@ const creatorRouter = Router();
 creatorRouter.post("/profile", userMiddleware, async (req, res) => {
   const {
     niche,
+    username,
     bio,
     platformLink,
     platformName,
@@ -17,6 +18,7 @@ creatorRouter.post("/profile", userMiddleware, async (req, res) => {
   await creatorModel.create({
     userId: userId,
     niche,
+    username,
     bio,
     platformName,
     platformLink,
@@ -46,20 +48,32 @@ creatorRouter.get("/profile", userMiddleware, async (req, res) => {
   }
 });
 
-creatorRouter.get("/get-name", userMiddleware, async (req, res) => {
+creatorRouter.get("/all-profiles", async (req, res) => {
+  try {
+    const allProfiles = await creatorModel.find();
+    res.json({
+      profiles: allProfiles,
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching profiles", error });
+  }
+});
+
+
+creatorRouter.get("/user-data", userMiddleware, async (req, res) => {
   //@ts-ignore
   const userId = req.userId;
-  const username = await userModel.findOne({
+  const userData = await userModel.findOne({
     _id: userId,
   });
-  if (!username) {
+  if (!userData) {
     res.json({
       message: "user not found",
     });
   }
   else{
     res.json({
-      username
+      userData
     })
   }
 });

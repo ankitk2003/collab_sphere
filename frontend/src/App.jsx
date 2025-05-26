@@ -3,14 +3,15 @@ import { RecoilRoot } from "recoil";
 
 import Home from "./components/Home";
 import Choose from "./components/Choose";
-import CreatorSignup from "./components/CreatorSignup";
-import BusinessSignup from "./components/BusinessSignup";
+// import CreatorSignup from "./components/CreatorSignup";
 import Login from "./components/Login";
 import CreatorForm from "./components/CreatorForm";
 import BusinessForm from "./components/BusinessForm";
 import CreatorDashboard from "./components/CreatorDashboard";
 import BusinessDashboard from "./components/BusinessDashboard";
 import ProtectedRoute from "./components/ProtectedRoute"; // Correct relative path
+import Chat from "./components/Chat";
+import Signup from "./components/Signup"
 
 function App() {
   return (
@@ -20,9 +21,10 @@ function App() {
           <Route path="/" element={<Home />} />
           wqer
           <Route path="/choose-role" element={<Choose />} />
-          <Route path="/creator-signup" element={<CreatorSignup />} />
-          <Route path="/business-signup" element={<BusinessSignup />} />
+          {/* <Route path="/creator-signup" element={<CreatorSignup />} /> */}
+          <Route path="/signup" element={<Signup/>} />
           <Route path="/login" element={<Login />} />
+          <Route path="/chat" element={<Chat />} />
           <Route
             path="/creator-form"
             element={
@@ -39,7 +41,7 @@ function App() {
               </ProtectedRoute>
             }
           />
-          {/* ✅ Protect the Creator Dashboard */}
+          {/*  Protect the Creator Dashboard */}
           <Route
             path="/creator-dashboard"
             element={
@@ -48,7 +50,7 @@ function App() {
               </ProtectedRoute>
             }
           />
-          {/* ✅ Protect the Business Dashboard */}
+          {/*  Protect the Business Dashboard */}
           <Route
             path="/business-dashboard"
             element={

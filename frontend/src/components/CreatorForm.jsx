@@ -20,11 +20,12 @@ const niches = [
 function CreatorForm() {
   const [selectedNiche, setSelectedNiche] = useState("");
   const bioRef = useRef();
+  const usernameRef = useRef();
   const platformNameRef = useRef();
   const platformLinkRef = useRef();
   const followerCountRef = useRef();
   const followerEngagementRef = useRef();
-  const navigate=useNavigate();
+  const navigate = useNavigate();
   async function handleSubmit() {
     try {
       const token = localStorage.getItem("token");
@@ -38,9 +39,11 @@ function CreatorForm() {
       const platformLink = platformLinkRef.current.value;
       const followerCount = followerCountRef.current.value;
       const engagementRate = followerEngagementRef.current.value;
+      const username = usernameRef.current.value;
       const niche = selectedNiche;
       console.log(
         bio,
+        username,
         platformLink,
         platformName,
         followerCount,
@@ -52,6 +55,7 @@ function CreatorForm() {
         "http://localhost:3000/api/v1/creator/profile",
         {
           bio,
+          username,
           platformName,
           platformLink,
           followerCount,
@@ -66,7 +70,7 @@ function CreatorForm() {
       );
 
       console.log(res.data.message);
-  navigate("/creator-dashboard");
+      navigate("/creator-dashboard");
     } catch (error) {
       console.log("token not found", error);
     }
@@ -138,6 +142,19 @@ function CreatorForm() {
                 You selected: <strong>{selectedNiche}</strong>
               </p>
             )}
+          </div>
+
+          <div className="mb-4">
+            <label htmlFor="username" className="block text-sm font-medium">
+              username
+            </label>
+            <input
+              type="text"
+              id="username"
+              className="w-full p-2 border border-gray-300 rounded-lg"
+              placeholder="Enter platform name"
+              ref={usernameRef}
+            />
           </div>
 
           <div className="mb-4">
