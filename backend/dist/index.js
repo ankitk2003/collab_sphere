@@ -1,26 +1,4 @@
 "use strict";
-// // import express from "express";
-// // import dotenv from "dotenv";
-// // import { userRouter } from "./routes/user";
-// // import mongoose from "mongoose";
-// // import { creatorRouter } from "./routes/creatorProfile";
-// // import cors from "cors";
-// // import { businessRouter } from "./routes/businessProfile";
-// // dotenv.config();
-// // const app=express();
-// // app.use(cors());
-// // app.use(express.json());
-// // app.use("/api/v1/user", userRouter);
-// // app.use("/api/v1/creator",creatorRouter);
-// // app.use("/api/v1/business",businessRouter)
-// // async function main(){
-// // await mongoose.connect("mongodb+srv://ankitdevx1808:ankit2003@cluster0.wlxth.mongodb.net/collab_sphere");
-// // console.log("database connected");
-// //     app.listen(3000,()=>{
-// //         console.log(process.env.JWT_user_password);
-// //     });
-// // }
-// // main();
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -34,62 +12,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-// import express from 'express';
-// import http from 'http';
-// import mongoose from 'mongoose';
-// import { Server as SocketIOServer } from 'socket.io';
-// import cors from 'cors';
-// import dotenv from 'dotenv';
-// import { userRouter } from './routes/user';
-// import { creatorRouter } from './routes/creatorProfile';
-// import { businessRouter } from './routes/businessProfile';
-// import chatRoutes from './routes/chat'; // ES6 import
-// import { messageModel } from './db.js'; // Make sure it's ES6 too
-// dotenv.config();
-// const app = express();
-// const server = http.createServer(app);
-// const io = new SocketIOServer(server, {
-//   cors: {
-//     origin: 'http://localhost:3000',
-//     methods: ['GET', 'POST'],
-//   },
-// });
-// // Middleware
-// app.use(cors());
-// app.use(express.json());
-// // Routes
-// app.use('/api/chat', chatRoutes);
-//  app.use("/api/v1/user", userRouter);
-// app.use("/api/v1/creator",creatorRouter);
-// app.use("/api/v1/business",businessRouter)
-// // MongoDB Connection
-// mongoose
-//   .connect(process.env.MONGO_URI as string)
-//   .then(() => console.log('✅ MongoDB connected'))
-//   .catch((err) => console.error('❌ MongoDB error:', err));
-// // Socket.IO Logic
-// io.on('connection', (socket) => {
-//   console.log('🟢 User connected');
-//   socket.on('joinRoom', ({ roomId }) => {
-//     socket.join(roomId);
-//     console.log(`🛏️  User joined room: ${roomId}`);
-//   });
-//   socket.on('sendMessage', async ({ roomId, senderId, content }) => {
-//     const newMessage = new messageModel({ roomId, senderId, content });
-//     try {
-//       const savedMessage = await newMessage.save();
-//       io.to(roomId).emit('receiveMessage', savedMessage);
-//     } catch (err) {
-//       console.error('❌ Error saving message:', err);
-//     }
-//   });
-//   socket.on('disconnect', () => {
-//     console.log('🔴 User disconnected');
-//   });
-// });
-// // Start Server
-// const PORT = process.env.PORT || 5000;
-// server.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
 const express_1 = __importDefault(require("express"));
 const http_1 = __importDefault(require("http"));
 const mongoose_1 = __importDefault(require("mongoose"));

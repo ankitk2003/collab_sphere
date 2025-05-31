@@ -12,6 +12,8 @@ import BusinessDashboard from "./components/BusinessDashboard";
 import ProtectedRoute from "./components/ProtectedRoute"; // Correct relative path
 import Chat from "./components/Chat";
 import Signup from "./components/Signup"
+import BusinesssNav from "./components/BusinessNav";
+import BusinessPost from "./components/BusinessPost";
 
 function App() {
   return (
@@ -19,12 +21,13 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<Home />} />
-          wqer
+       
           <Route path="/choose-role" element={<Choose />} />
           {/* <Route path="/creator-signup" element={<CreatorSignup />} /> */}
           <Route path="/signup" element={<Signup/>} />
           <Route path="/login" element={<Login />} />
           <Route path="/chat" element={<Chat />} />
+          <Route path="/business-post" element={<BusinessPost/>}/>
           <Route
             path="/creator-form"
             element={

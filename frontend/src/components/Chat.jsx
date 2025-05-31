@@ -62,7 +62,15 @@ const Chat = () => {
             }`}
           >
             {msg.content}
-           <span className="text-xs font-thin">{msg.timestamp}</span>
+
+
+
+<span className="text-[10px] font-thin flex flex-col items-end text-gray-500">
+  <span>{new Date(msg.timestamp).toLocaleDateString()}</span>
+  <span>{new Date(msg.timestamp).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</span>
+</span>
+
+
           </div>
         ))}
       </div>

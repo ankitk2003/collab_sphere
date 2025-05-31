@@ -1,34 +1,86 @@
 import { Router } from "express";
 import { creatorModel, userModel } from "../db";
 import { userMiddleware } from "../middleware/usermiddleware";
+import upload from "../middleware/multer";
 
 const creatorRouter = Router();
-creatorRouter.post("/profile", userMiddleware, async (req, res) => {
-  const {
-    niche,
-    username,
-    bio,
-    platformLink,
-    platformName,
-    followerCount,
-    engagementRate,
-  } = req.body;
+
+creatorRouter.post(
+  "/profile",
+  userMiddleware,
+  (req, res, next) => {
+    upload.single("profilePhoto")(req, res, function (err) {
+      if (err) {
+        console.error("Multer error:", err);
+        return res.status(400).json({ error: err.message });
+      }
+      next();
+    });
+  },
   //@ts-ignore
-  const userId = req.userId;
-  await creatorModel.create({
-    userId: userId,
-    niche,
-    username,
-    bio,
-    platformName,
-    platformLink,
-    followerCount,
-    engagementRate,
-  });
-  res.json({
-    message: "profile created successfully",
-  });
-});
+  async (req, res) => {
+    try {
+      const {
+        niche,
+        username,
+        bio,
+        platformLink,
+        platformName,
+        followerCount,
+        engagementRate,
+      } = req.body;
+
+      //@ts-ignore
+      const userId = req.userId;
+      const profilePhoto = req.file?.path || "";
+
+      const existingProfile = await creatorModel.findOne({ userId });
+
+      if (existingProfile) {
+        // Update existing profile
+        await creatorModel.findOneAndUpdate(
+          { userId },
+          {
+            niche,
+            username,
+            bio,
+            platformName,
+            platformLink,
+            followerCount,
+            engagementRate,
+            profilePhoto: profilePhoto || existingProfile.profilePhoto, // keep old if not re-uploaded
+          },
+          { new: true }
+        );
+
+        return res.json({
+          message: "Profile updated successfully",
+        });
+      }
+
+      // Create new profile
+      await creatorModel.create({
+        userId,
+        niche,
+        username,
+        bio,
+        platformName,
+        platformLink,
+        followerCount,
+        engagementRate,
+        profilePhoto,
+      });
+
+      res.json({
+        message: "Profile created successfully",
+      });
+    } catch (err: any) {
+      console.error("Upload error:", JSON.stringify(err, null, 2));
+      res.status(500).json({ error: err.message || "Something went wrong" });
+    }
+  }
+);
+
 
 creatorRouter.get("/profile", userMiddleware, async (req, res) => {
   //@ts-ignore
@@ -59,7 +111,6 @@ creatorRouter.get("/all-profiles", async (req, res) => {
   }
 });
 
-
 creatorRouter.get("/user-data", userMiddleware, async (req, res) => {
   //@ts-ignore
   const userId = req.userId;
@@ -70,11 +121,10 @@ creatorRouter.get("/user-data", userMiddleware, async (req, res) => {
     res.json({
       message: "user not found",
     });
-  }
-  else{
+  } else {
     res.json({
-      userData
-    })
+      userData,
+    });
   }
 });
 

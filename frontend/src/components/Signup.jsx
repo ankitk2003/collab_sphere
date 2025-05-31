@@ -195,7 +195,6 @@ export default function Signup() {
         </>
       ) : (
         <>
-          {/* OTP verification page renderd using conditional rendering using staging */}
           <div id="logo">
             <span className="font-bold ml-5 text-xl">Collab_sphere</span>
           </div>

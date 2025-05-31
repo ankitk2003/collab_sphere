@@ -5,7 +5,6 @@ import axios from "axios";
 import { FaMapMarkerAlt } from "react-icons/fa";
 import { FaUsers, FaChartLine, FaExternalLinkAlt } from "react-icons/fa";
 
-// ...existing imports...
 
 function CreatorDashboard() {
   const navigate = useNavigate();
@@ -154,6 +153,9 @@ function Businesses({ senderId }) {
 //profile in right side
 
 
+// 
+// import {  FaChartLine, FaExternalLinkAlt } from "react-icons/fa";
+
 function CreatorProfile({ username }) {
   const [profileData, setProfileData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -176,6 +178,7 @@ function CreatorProfile({ username }) {
         });
 
         setProfileData(res.data);
+        console.log(profileData);
         setLoading(false);
       } catch (error) {
         console.error("Error fetching profile data:", error);
@@ -187,54 +190,56 @@ function CreatorProfile({ username }) {
     fetchProfileData();
   }, []);
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>{error}</div>;
+  if (loading) return <div className="text-center py-10">Loading...</div>;
+  if (error) return <div className="text-red-500 p-4">{error}</div>;
 
   if (!profileData?.foundUser) {
     return <div className="p-4 text-gray-600">{profileData?.message || "No profile data found"}</div>;
   }
 
-  const { niche, bio, followerCount, engagementRate, platformName, platformLink } = profileData.foundUser;
+  const { niche, bio, followerCount, engagementRate, platformName, platformLink,profilePhoto } = profileData.foundUser;
 
   return (
-    <div className=" bg-white shadow-lg rounded-2xl overflow-hidden p-6 border border-gray-200 mt-10 mr-20 h-[600px]">
-      <div><h1>Your Profile:</h1></div>
-      <div className="flex items-center space-x-4">
+    <div className="bg-white shadow-2xl rounded-2xl p-8 max-w-md mx-auto mt-10 border border-gray-200 h-[500px] w-[500px]">
+      <div className="flex flex-col items-center">
         <img
-          src="https://via.placeholder.com/80"
+          src={profilePhoto}
           alt="Profile"
-          className="w-20 h-20 rounded-full border-2 border-gray-300"
+          className="w-24 h-24 rounded-full border-4 border-blue-500 shadow-sm"
         />
-        <div>
-          <h2 className="text-xl font-semibold text-gray-800">{username}</h2>
-          <p className="text-gray-600">{niche}</p>
-        </div>
+        <h2 className="mt-4 text-2xl font-bold text-gray-800">{username}</h2>
+        <p className="text-sm text-gray-500 italic">{niche}</p>
       </div>
-      <p className="text-gray-600 mt-2">{bio}</p>
-      
-      <div className="mt-4 flex gap-4 text-gray-700">
-        <div className="flex items-center gap-2 bg-gray-100 px-4 py-2 rounded-lg">
-          <FaUsers className="text-blue-500" />
-          <span>{followerCount.toLocaleString()} Followers</span>
+
+      <div className="mt-6 text-center">
+        <p className="text-gray-700 text-sm">{bio}</p>
+      </div>
+
+      <div className="mt-6 grid grid-cols-2 gap-4 text-center">
+        <div className="bg-blue-50 rounded-lg py-3 px-2 flex flex-col items-center shadow-sm">
+          <FaUsers className="text-blue-600 text-xl mb-1" />
+          <span className="text-sm font-medium">{Number(followerCount).toLocaleString()} Followers</span>
         </div>
-        <div className="flex items-center gap-2 bg-gray-100 px-4 py-2 rounded-lg">
-          <FaChartLine className="text-green-500" />
-          <span>{engagementRate.toLocaleString()} Engagement</span>
+        <div className="bg-green-50 rounded-lg py-3 px-2 flex flex-col items-center shadow-sm">
+          <FaChartLine className="text-green-600 text-xl mb-1" />
+          <span className="text-sm font-medium">{Number(engagementRate).toLocaleString()}% Engagement</span>
         </div>
       </div>
 
-      <div className="mt-4">
+      <div className="mt-6 text-center">
         <a
           href={platformLink.startsWith("http") ? platformLink : `https://${platformLink}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center gap-2 text-blue-500 hover:underline"
+          className="inline-flex items-center text-blue-600 hover:underline text-sm"
         >
-          {platformName} <FaExternalLinkAlt />
+          {platformName} <FaExternalLinkAlt className="ml-1" />
         </a>
       </div>
     </div>
   );
 }
 
+
 export default CreatorDashboard;
+// export default CreatorProfile;

@@ -1,8 +1,7 @@
-// import { userModel,creatorModel,businessModel};
-
 import mongoose from "mongoose";
-const { Schema, Types } = mongoose; // Destructure Types for ObjectId
+const { Schema, Types } = mongoose;
 
+// ===== USER SCHEMA =====
 const userSchema = new Schema({
   email: { type: String, required: true },
   password: String,
@@ -10,8 +9,9 @@ const userSchema = new Schema({
   role: String,
 });
 
+// ===== CREATOR PROFILE SCHEMA =====
 const creatorProfileSchema = new Schema({
-  userId: { type: Types.ObjectId, ref: "users", require: true }, // Reference to the user model
+  userId: { type: Types.ObjectId, ref: "users", required: true },
   username: String,
   bio: String,
   niche: String,
@@ -19,19 +19,27 @@ const creatorProfileSchema = new Schema({
   platformLink: String,
   followerCount: Number,
   engagementRate: Number,
+   profilePhoto: {
+    type: String,
+    default: "",
+  }
 });
 
+// ===== BUSINESS PROFILE SCHEMA =====
 const businessProfileSchema = new Schema({
-  userId: { type: Types.ObjectId, ref: "users" },
+  userId: { type: Types.ObjectId, ref: "users", required: true },
   businessName: String,
   industry: String,
   websiteUrl: String,
-  campaignGoals: String,
-  targetAudience: [],
-  budgetRange: String,
+  targetAudience: [String],
+   profilePhoto: {
+    type: String,
+    default: "",
+  },
   posted: String,
 });
 
+// ===== OTP SCHEMA =====
 const otpSchema = new Schema({
   email: { type: String, unique: true },
   otp: String,
@@ -42,16 +50,39 @@ const otpSchema = new Schema({
   verified: { type: Boolean, default: false },
 });
 
-const messageSchema = new mongoose.Schema({
+// ===== MESSAGE SCHEMA =====
+const messageSchema = new Schema({
   roomId: { type: String, required: true },
-  senderId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+  senderId: { type: Types.ObjectId, ref: "users", required: true },
   content: { type: String, required: true },
-  timestamp: { type: Date, default: Date.now }
-})
+  timestamp: { type: Date, default: Date.now },
+});
 
+// ===== BUSINESS POST SCHEMA =====
+const businessPostSchema = new Schema({
+  userId: { type: Types.ObjectId, ref: "businessProfile", required: true },
+  title: String,
+  description: String,
+  targetAudience: [String],
+  budget: Number,
+  platform: String,
+  postedOn:Date
+});
+
+// ===== MODELS =====
 const userModel = mongoose.model("users", userSchema);
 const creatorModel = mongoose.model("creatorProfile", creatorProfileSchema);
 const businessModel = mongoose.model("businessProfile", businessProfileSchema);
 const otpModel = mongoose.model("otp", otpSchema);
-const messageModel=mongoose.model("message",messageSchema);
-export { userModel, creatorModel, businessModel, otpModel ,messageModel };
+const messageModel = mongoose.model("message", messageSchema);
+const businessPostModel = mongoose.model("post", businessPostSchema);
+
+// ===== EXPORTS =====
+export {
+  userModel,
+  creatorModel,
+  businessModel,
+  otpModel,
+  messageModel,
+  businessPostModel,
+};

@@ -3,48 +3,66 @@ import React, { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const BusinessForm = () => {
-const navigate=useNavigate();
+  const navigate = useNavigate();
   const [industry, setIndustry] = useState("");
+  const [selectedPhoto, setSelectedPhoto] = useState(null);
+  const[loading,setLoading]=useState(false);
   const websiteUrlRef = useRef();
-  const campaignGoalsRef = useRef();
   const targetAudienceRef = useRef();
-  const budgetRangeRef = useRef();
-  const businessNameRef=useRef();
+  const businessNameRef = useRef();
 
   async function handleSubmit() {
+      setLoading(true); // Show loader
+
     try {
       const token = localStorage.getItem("token");
-      
+
       const websiteUrl = websiteUrlRef.current.value;
-      const campaignGoals = campaignGoalsRef.current.value;
-      const targetAudience = targetAudienceRef.current.value.split(",").map(item => item.trim());
-      const budgetRange = budgetRangeRef.current.value;
-      const businessName=businessNameRef.current.value;
+      const targetAudience = targetAudienceRef.current.value
+        .split(",")
+        .map((item) => item.trim());
+      const businessName = businessNameRef.current.value;
+
+      const formData = new FormData();
+      formData.append("industry", industry);
+      formData.append("websiteUrl", websiteUrl);
+      formData.append("businessName", businessName);
+      formData.append("targetAudience", JSON.stringify(targetAudience));
+      if (selectedPhoto) {
+        formData.append("profilePhoto", selectedPhoto);
+      }
+
       const res = await axios.post(
         "http://localhost:3000/api/v1/business/profile",
-        {
-          industry,
-          websiteUrl,
-          businessName,
-          campaignGoals,
-          targetAudience,
-          budgetRange,
-        },
+        formData,
         {
           headers: {
             Authorization: `Bearer ${token}`,
+            "Content-Type": "multipart/form-data",
           },
         }
       );
-navigate("/business-dashboard")
-      console.log(res);
 
+      console.log(res.data.message);
+      navigate("/business-dashboard");
     } catch (error) {
       console.log("Error submitting form", error);
+    }finally{
+      setLoading(false)
     }
   }
 
   return (
+
+    <>
+ {loading && (
+        <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
+          <div className="bg-white p-5 rounded-md shadow-lg">
+            <p className="text-xl font-semibold">Loading...</p>
+          </div>
+        </div>
+      )}
+
     <div className="container mx-auto p-5">
       <div id="logo">
         <span className="font-bold ml-5 text-xl">Collab_sphere</span>
@@ -67,13 +85,12 @@ navigate("/business-dashboard")
             />
           </div>
 
-
           <div className="mb-4">
-            <label className="block text-sm font-medium">Business name:</label>
+            <label className="block text-sm font-medium">Business Name</label>
             <input
               type="text"
               className="w-full p-2 border border-gray-300 rounded-lg"
-              placeholder="Enter business Name"
+              placeholder="Enter business name"
               ref={businessNameRef}
             />
           </div>
@@ -89,15 +106,6 @@ navigate("/business-dashboard")
           </div>
 
           <div className="mb-4">
-            <label className="block text-sm font-medium">Campaign Goals</label>
-            <textarea
-              className="w-full p-2 border border-gray-300 rounded-lg"
-              placeholder="Describe your campaign goals"
-              ref={campaignGoalsRef}
-            ></textarea>
-          </div>
-
-          <div className="mb-4">
             <label className="block text-sm font-medium">Target Audience</label>
             <input
               type="text"
@@ -108,12 +116,12 @@ navigate("/business-dashboard")
           </div>
 
           <div className="mb-4">
-            <label className="block text-sm font-medium">Budget Range</label>
+            <label className="block text-sm font-medium">Profile Photo</label>
             <input
-              type="text"
+              type="file"
+              accept="image/*"
               className="w-full p-2 border border-gray-300 rounded-lg"
-              placeholder="Enter budget range"
-              ref={budgetRangeRef}
+              onChange={(e) => setSelectedPhoto(e.target.files[0])}
             />
           </div>
 
@@ -128,6 +136,7 @@ navigate("/business-dashboard")
         </div>
       </div>
     </div>
+    </>
   );
 };
 
