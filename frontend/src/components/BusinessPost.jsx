@@ -1,26 +1,25 @@
-import React from 'react'
-import BusinesssNav from './BusinessNav'
-import { useState } from 'react';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import React from "react";
+import BusinesssNav from "./BusinessNav";
+import { useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 function BusinessPost() {
   return (
     <div>
-     <BusinesssNav/>
-     <CreateCampaignForm/>
+      <BusinesssNav />
+      <CreateCampaignForm />
     </div>
-  )
+  );
 }
 
-
 const CreateCampaignForm = () => {
-    const navigate=useNavigate();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    title: '',
-    description: '',
-    targetAudience: '',
-    budget: '',
-    platform: '',
+    title: "",
+    description: "",
+    targetAudience: "",
+    budget: "",
+    platform: "",
   });
 
   const handleChange = (e) => {
@@ -28,37 +27,38 @@ const CreateCampaignForm = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = async(e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const token = localStorage.getItem("token");
-      
+
+ const payload={
+  ...formData,
+  postedOn:new Date()
+}
+
       const res = await axios.post(
         "http://localhost:3000/api/v1/business/create-post",
-        
-         formData
-        ,
+
+        payload,
         {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         }
       );
-        navigate("/business-dashboard")
+      navigate("/business-dashboard");
       console.log(res);
-
     } catch (error) {
       console.log("Error submitting form", error);
-    }     
-
-
-
-
-
+    }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="max-w-xl mx-auto p-6 bg-white shadow-2xl rounded-2xl space-y-6 mt-10">
+    <form
+      onSubmit={handleSubmit}
+      className="max-w-xl mx-auto p-6 bg-white shadow-2xl rounded-2xl space-y-6 mt-10"
+    >
       <h2 className="text-2xl font-bold text-gray-800">Create New Campaign</h2>
 
       <div>
@@ -75,7 +75,9 @@ const CreateCampaignForm = () => {
       </div>
 
       <div>
-        <label className="block text-gray-700 font-semibold mb-1">Description</label>
+        <label className="block text-gray-700 font-semibold mb-1">
+          Description
+        </label>
         <textarea
           name="description"
           value={formData.description}
@@ -88,7 +90,9 @@ const CreateCampaignForm = () => {
       </div>
 
       <div>
-        <label className="block text-gray-700 font-semibold mb-1">Target Audience</label>
+        <label className="block text-gray-700 font-semibold mb-1">
+          Target Audience
+        </label>
         <input
           type="text"
           name="targetAudience"
@@ -101,7 +105,9 @@ const CreateCampaignForm = () => {
       </div>
 
       <div>
-        <label className="block text-gray-700 font-semibold mb-1">Budget ($)</label>
+        <label className="block text-gray-700 font-semibold mb-1">
+          Budget ($)
+        </label>
         <input
           type="number"
           name="budget"
@@ -114,7 +120,9 @@ const CreateCampaignForm = () => {
       </div>
 
       <div>
-        <label className="block text-gray-700 font-semibold mb-1">Platform</label>
+        <label className="block text-gray-700 font-semibold mb-1">
+          Platform
+        </label>
         <select
           name="platform"
           value={formData.platform}
@@ -141,8 +149,4 @@ const CreateCampaignForm = () => {
   );
 };
 
-
-
-
-
-export default BusinessPost
+export default BusinessPost;

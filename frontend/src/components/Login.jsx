@@ -35,9 +35,11 @@ function Login() {
 
       localStorage.setItem("token", res.data.token);
       const role = res.data.role;
+      localStorage.setItem("role",role);
+      // console.log(role);
       alert("Login successful!");
 
-      setState(true); // ✅ Set Recoil state after successful login
+      setState(true); //  Set Recoil state after successful login
 
       if (role === "creator") {
         const profileData = await axios.get(

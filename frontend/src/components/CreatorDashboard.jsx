@@ -33,6 +33,11 @@ function CreatorDashboard() {
   // logout logic
   const handleLogout = () => {
     localStorage.removeItem("token");
+        localStorage.removeItem("role");
+            localStorage.removeItem("senderId");
+    localStorage.removeItem("username");
+
+
     navigate("/");
   };
 
@@ -89,64 +94,133 @@ function CreatorDashboard() {
 }
 
 // Businesses Component
+
+
+// import { useEffect, useState } from "react";
+// import axios from "axios";
+// import { useNavigate } from "react-router-dom";
+// import { FaMapMarkerAlt } from "react-icons/fa";
+
 function Businesses({ senderId }) {
-  const [businesses, setBusinesses] = useState([]);
+  const [posts, setPosts] = useState([]);
+  const token = localStorage.getItem("token");
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios.get("http://localhost:3000/api/v1/business/all-business")
-      .then((res) => setBusinesses(res.data.businessProfiles))
-      .catch((err) => console.error("Error fetching businesses:", err));
+    const FetchProfile = async () => {
+      try {
+        const res = await axios.get("http://localhost:3000/api/v1/business/get-posts", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setPosts(res.data.posts);
+        console.log(res.data.posts);
+      } catch (e) {
+        console.log("error in fetching data", e);
+      }
+    };
+    FetchProfile();
   }, []);
 
   return (
     <div className="p-6">
-      <h2 className="text-xl font-semibold ml-10 mb-6">Businesses You Would Like to Work With</h2>
+      <h2 className="text-xl font-semibold ml-10 mb-6">
+        Businesses You Would Like to Work With
+      </h2>
       <div className="space-y-6">
-        {businesses.map((business) => (
-          <div
-            key={business.userId}
-            className="border-[2px] w-full h-auto group hover:bg-gray-100 ml-10 p-5"
-          >
-            <div className="text-sm">Posted on : {business.posted}</div>
-            <div className="font-semibold group-hover:underline group-hover:text-green-500 text-2xl mt-2">
-              {business.businessName}
-            </div>
-            <div className="text-sm"><strong>estd Budget:</strong> ${business.budgetRange}</div>
-            <div className="mt-4">{business.campaignGoals}</div>
-            <div className="mt-2 text-sm"><strong>Industry:</strong> {business.industry}</div>
-            <div className="mt-2 text-sm flex items-center gap-2 flex-wrap">
-              <strong>Target audience:</strong> {business.targetAudience.join(", ")}
-              <div className="flex items-center ml-56">
-                <FaMapMarkerAlt className="text-red-500" />
-                <span>India</span>
-              </div>
-            </div>
-            <div className="mt-4 text-sm font-serif">
-              Know more about brand:{" "}
-              <a href={business.websiteUrl} className="text-blue-500 underline" target="_blank">
-                {business.websiteUrl}
-              </a>
-            </div>
-            <button
-              className="bg-green-500 rounded-2xl text-white p-2 mt-2"
-              onClick={() =>
-                navigate("/chat", {
-                  state: {
-                    senderId,
-                    recieverId: business._id,
-                  },
-                })
-              }
-            >
-              Chat
-            </button>
-          </div>
-        ))}
+        {posts.map((business) => {
+  const audience =
+    typeof business.targetAudience === "string"
+      ? JSON.parse(business.targetAudience)
+      : business.targetAudience;
+
+  return (
+    <div
+      key={business._id}
+      className="border-[2px] w-full h-auto group hover:bg-gray-100 ml-10 p-5 rounded-xl shadow-md"
+    >
+      {/* User Info (Who posted the business) */}
+      <div className="flex items-center gap-4 mb-3">
+        {business.userId?.profilePhoto && (
+          <img
+            src={business.userId.profilePhoto}
+            alt="User"
+            className="w-10 h-10 rounded-full object-cover"
+          />
+        )}
+        <div className="text-md font-medium">
+          Posted by: {business.userId.businessName || "Unknown"}
+        </div>
+      </div>
+
+      {/* Business Info */}
+
+      <div className="text-sm text-gray-600">
+  Posted on: {new Date(business.postedOn).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  })}
+</div>
+
+      <div className="font-semibold text-lg mt-1">{business.title}</div>
+      <div className="text-sm mt-1">
+        <strong>Estimated Budget:</strong> ${business.budget}
+      </div>
+      <div className="mt-2 text-sm">
+        <strong>Description:</strong> {business.description}
+      </div>
+      <div className="mt-2 text-sm">
+        <strong>Industry:</strong> {business.industry}
+      </div>
+      <div className="mt-2 text-sm">
+        <strong>Platform:</strong> {business.platform}
+      </div>
+
+      {/* Target Audience + Location */}
+      <div className="mt-2 text-sm flex items-center gap-2 flex-wrap">
+        <strong>Target audience:</strong> {audience?.join(", ")}
+        <div className="flex items-center ml-auto text-sm text-gray-500">
+          <FaMapMarkerAlt className="text-red-500 mr-1" />
+          <span>India</span>
+        </div>
+      </div>
+
+      {/* Website */}
+      <div className="mt-4 text-sm font-serif">
+        Know more about brand:{" "}
+        <a
+          href={`https://${business.websiteUrl}`}
+          className="text-blue-500 underline"
+          target="_blank"
+          rel="noreferrer"
+        >
+          {business.websiteUrl}
+        </a>
+      </div>
+
+      {/* Chat Button */}
+      <button
+        className="bg-green-500 rounded-2xl text-white px-4 py-2 mt-4 hover:bg-green-600"
+        onClick={() =>
+          navigate("/chat", {
+            state: {
+              senderId,
+              recieverId: business.userId?._id || business.userId,
+            },
+          })
+        }
+      >
+        Chat
+      </button>
+    </div>
+  );
+})}
       </div>
     </div>
   );
 }
+
+
 
 // CreatorProfile remains unchanged
 
@@ -200,7 +274,7 @@ function CreatorProfile({ username }) {
   const { niche, bio, followerCount, engagementRate, platformName, platformLink,profilePhoto } = profileData.foundUser;
 
   return (
-    <div className="bg-white shadow-2xl rounded-2xl p-8 max-w-md mx-auto mt-10 border border-gray-200 h-[500px] w-[500px]">
+    <div className="bg-white shadow-2xl rounded-2xl p-8 max-w-md mx-auto mt-10 border border-gray-200 h-auto w-[500px]">
       <div className="flex flex-col items-center">
         <img
           src={profilePhoto}

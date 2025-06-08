@@ -14,6 +14,7 @@ import Chat from "./components/Chat";
 import Signup from "./components/Signup"
 import BusinesssNav from "./components/BusinessNav";
 import BusinessPost from "./components/BusinessPost";
+import Profile from "./components/Profile";
 
 function App() {
   return (
@@ -21,7 +22,7 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<Home />} />
-       
+        <Route path="/profile" element={<Profile/>}/>
           <Route path="/choose-role" element={<Choose />} />
           {/* <Route path="/creator-signup" element={<CreatorSignup />} /> */}
           <Route path="/signup" element={<Signup/>} />
